@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace HeatmapApp
 {
     public partial class trackingPage : Form
@@ -26,10 +27,10 @@ namespace HeatmapApp
 
         public struct HeatPoint
         {
-            public int X;
-            public int Y;
+            public double X;
+            public double Y;
             public byte Intensity;
-            public HeatPoint(int iX, int iY, byte bIntensity)
+            public HeatPoint(double iX, double iY, byte bIntensity)
             {
                 X = iX;
                 Y = iY;
@@ -244,7 +245,7 @@ namespace HeatmapApp
 
         private void user_id_button_Click(object sender, EventArgs e)
         {
-            string user_id = user_id_button.Text;
+            string user_id = user_id_textBox.Text;
 
             printPathAccordingToUser(user_id);
 
@@ -253,93 +254,109 @@ namespace HeatmapApp
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void printPathAccordingToUser(string id)
         {
-            List<string> pos = new List<string>();
+            List<List<string>> locaitons = new List<List<string>>();
+            string time = "13:55:35";
+            int nullCount = 0;
             while (true)
             {
-                string time = "13:55:31";
-                //try
-                //{
+
                 con.client = new FireSharp.FirebaseClient(con.config);
                 string addr = "Devices/" + id + "/" + time;
-                con.response = await con.client.GetAsync(addr); // bu kısmı elimle girdim ama bi insanın hangi saatlerde nerede olduğuna burdan bakabiliriz
-                                                                //form üzerinden kişinin bilgileri girilecek ve device ıdsi de girilecek sonrasında hangi zaman aralığında nerde olduğunu kontorl etmek için burası kullanılacak
-                                                                //2 saniyelik aralıklara bakarız, 133:55:30 da nerde dediyse bi kendinsine bi öncesine bakarız bi de sonrasına
-                                                                //hangi zaman dilimnde databasede var ise onu alırız
+                con.response = await con.client.GetAsync(addr);
 
                 Device device = con.response.ResultAs<Device>();
                 if (device == null)
                 {
-                    string[] times = time.Split(':');
-                    int hour = Int32.Parse(times[0]);
-                    int minute = Int32.Parse(times[1]);
-                    int second = Int32.Parse(times[2]);
-
-                    if (second < 59)
-                        second++;
-                    else
-                    {
-                        if (minute < 59)
-                        {
-                            minute++;
-                            second = 0;
-                        }
-                        else
-                        {
-                            minute = 0;
-                            second = 0;
-                            hour++;
-                        }
-
-                    }
-                    if (minute < 10)
-                        time = hour.ToString() + ":0" + minute.ToString();
-                    if (second < 10)
-                        time = time + ":0" + second.ToString();
+                    nullCount++;
+                    if (nullCount > 3)
+                        break;
+                    time = ControlTime(time);
                     continue;
                 }
                 else
+                {
+                    nullCount = 0;
+                    List<string> pos = new List<string>();
                     pos.Add((device.posX).ToString());
-
-
-                //}
-                //catch (Exception)
-                //{
-
-                //}
+                    pos.Add((device.posY).ToString());
+                    locaitons.Add(pos);
+                    time = ControlTime(time);
+                }
             }
 
-            for (int i = 0; i < pos.Count; i++)
-            {
-                MessageBox.Show(pos[i]);
-            }
-
-            //// Create new memory bitmap the same size as the picture box
-            //Bitmap bMap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            //// Initialize random number generator
-            //Random rRand = new Random();
-            //// Loop variables
-            ///* int iX;
-            // int iY;
-            // byte iIntense;
-            // // Lets loop 500 times and create a random point each iteration
-            // for (int i = 0; i < 500; i++)
-            // {
-            //     // Pick random locations and intensity
-            //     iX = rRand.Next(0, 500);
-            //     iY = rRand.Next(0, 500);
-            //     iIntense = (byte)rRand.Next(0, 120);
-            //     // Add heat point to heat points list
-            //     HeatPoints.Add(new HeatPoint(iX, iY, iIntense));
-            // }*/
-            //HeatPoints.Add(new HeatPoint(100, 250, 60));
-            //HeatPoints.Add(new HeatPoint(50, 200, 40));
-            //HeatPoints.Add(new HeatPoint(100, 150, 20));
-            //HeatPoints.Add(new HeatPoint(500, 460, 200));
-            //// Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
-            //bMap = CreateIntensityMask(bMap, HeatPoints);
-            //// Colorize the memory bitmap and assign it as the picture boxes image
-            //pictureBox1.Image = Colorize(bMap, 255);
+            createBitMap(locaitons);
 
         }
+
+        private void createBitMap(List<List<string>> locaitons)
+        {
+            // Create new memory bitmap the same size as the picture box
+            Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
+
+            for (int i = 0; i < locaitons.Count; i++)
+            {
+                HeatPoints.Add(new HeatPoint(Double.Parse(locaitons[i][0]), Double.Parse(locaitons[i][1]), 100));
+            }
+            // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
+            bMap = CreateIntensityMask(bMap, HeatPoints);
+            // Colorize the memory bitmap and assign it as the picture boxes image
+            map_pictureBox.Image = Colorize(bMap, 255);
+        }
+
+        private string ControlTime(string time)
+        {
+            string[] times = time.Split(':');
+            int hour = Int32.Parse(times[0]);
+            int minute = Int32.Parse(times[1]);
+            int second = Int32.Parse(times[2]);
+
+            if (second < 59)
+                second++;
+            else
+            {
+                if (minute < 59)
+                {
+                    minute++;
+                    second = 0;
+                }
+                else
+                {
+                    if (hour < 23)
+                    {
+                        minute = 0;
+                        second = 0;
+                        hour++;
+                    }
+                    else
+                    {
+                        minute = 0;
+                        second = 0;
+                        hour = 0;
+                    }
+
+                }
+
+            }
+            if (minute > 10 && second > 10 && hour > 10) // hiçbiri 
+                time = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            else if (minute < 10 && second > 10 && hour > 10) // dakika
+                time = hour.ToString() + ":0" + minute.ToString() + second.ToString();
+            else if (minute > 10 && second < 10 && hour > 10) // saniye
+                time = hour.ToString() + minute.ToString() + ":0" + second.ToString();
+            else if (minute > 10 && second > 10 && hour < 10) // saat
+                time = ":0" + hour.ToString() + minute.ToString() + second.ToString();
+            else if (minute < 10 && second < 10 && hour > 10) // dakika ve saniye
+                time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second > 10 && hour < 10) // saat ve dakika
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + second.ToString();
+            else if (minute > 10 && second < 10 && hour < 10) // saat ve saniye
+                time = ":0" + hour.ToString() + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second < 10 && hour < 10) // hepsi
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+
+            return time;
+
+        }
+
     }
 }

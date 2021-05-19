@@ -37,5 +37,12 @@ namespace HeatmapApp
             form.Show();
             this.Hide();
         }
+
+        private void current_loc_button_Click(object sender, EventArgs e)
+        {
+            currentLocationPage form = new currentLocationPage();
+            form.Show();
+            this.Hide();
+        }
     }
 }

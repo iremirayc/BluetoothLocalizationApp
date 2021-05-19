@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BLE_DB.Database;
+using BLE_DB.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,22 +14,21 @@ using System.Windows.Forms;
 
 namespace HeatmapApp
 {
-    public partial class heatmapPage : Form
+    public partial class currentLocationPage : Form
     {
-        public heatmapPage()
+        public currentLocationPage()
         {
             InitializeComponent();
         }
-
 
         private List<HeatPoint> HeatPoints = new List<HeatPoint>();
 
         public struct HeatPoint
         {
-            public int X;
-            public int Y;
+            public double X;
+            public double Y;
             public byte Intensity;
-            public HeatPoint(int iX, int iY, byte bIntensity)
+            public HeatPoint(double iX, double iY, byte bIntensity)
             {
                 X = iX;
                 Y = iY;
@@ -109,6 +110,7 @@ namespace HeatmapApp
             double radians = (Math.PI / 180) * degrees;
             return (radians);
         }
+
 
         public static Bitmap Colorize(Bitmap Mask, byte Alpha)
         {
@@ -225,6 +227,13 @@ namespace HeatmapApp
             return target;
         }
 
+        private void showHeatmap_Click(object sender, EventArgs e)
+        {
+            heatmapPage form = new heatmapPage();
+            form.Show();
+            this.Hide();
+        }
+
         private void findLocation_Click(object sender, EventArgs e)
         {
             locationPage form = new locationPage();
@@ -232,26 +241,113 @@ namespace HeatmapApp
             this.Hide();
         }
 
-        private void userTrace_Click(object sender, EventArgs e)
+        static FirebaseConneciton con = new FirebaseConneciton();
+        private async void printCurrentTimeAccordingToUser(string id)
         {
-            trackingPage form = new trackingPage();
-            form.Show();
-            this.Hide();
+            DateTime date = DateTime.Now;
+            string format = "HH:mm:ss";
+            string time = date.ToString(format);
+            while (true)
+            {
+                System.Threading.Thread.Sleep(1000);
+
+                con.client = new FireSharp.FirebaseClient(con.config);
+                string addr = "Devices/" + id + "/" + time;
+                con.response = await con.client.GetAsync(addr);
+
+                Device device = con.response.ResultAs<Device>();
+
+                if (device == null)
+                {
+                    time = ControlTime(time);
+                    continue;
+                }
+
+                else
+                {
+                    date = DateTime.Now;
+                    format = "HH:mm:ss";
+                    time = date.ToString(format);
+                    createBitMap(device);
+                }
+            }
         }
 
-        private void heatmapPage_Load(object sender, EventArgs e)
+        private void createBitMap(Device device)
         {
             // Create new memory bitmap the same size as the picture box
-            Bitmap bMap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-
-            HeatPoints.Add(new HeatPoint(100, 250, 60));
-            HeatPoints.Add(new HeatPoint(50, 200, 40));
-            HeatPoints.Add(new HeatPoint(100, 150, 20));
-            HeatPoints.Add(new HeatPoint(500, 460, 200));
+            Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
+            HeatPoints.Clear();
+            HeatPoints.Add(new HeatPoint(device.posX, device.posY, 60));
             // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
             bMap = CreateIntensityMask(bMap, HeatPoints);
             // Colorize the memory bitmap and assign it as the picture boxes image
-            pictureBox1.Image = Colorize(bMap, 255);
+            map_pictureBox.Image = Colorize(bMap, 255);
+        }
+
+        private string ControlTime(string time)
+        {
+            string[] times = time.Split(':');
+            int hour = Int32.Parse(times[0]);
+            int minute = Int32.Parse(times[1]);
+            int second = Int32.Parse(times[2]);
+
+            if (second > 1)
+                second--;
+            else
+            {
+                if (minute > 1)
+                {
+                    minute--;
+                    second = 59;
+                }
+                else
+                {
+                    if (hour > 1)
+                    {
+                        minute = 59;
+                        second = 59;
+                        hour--;
+                    }
+                    else
+                    {
+                        minute = 59;
+                        second = 59;
+                        hour = 23;
+                    }
+
+                }
+
+            }
+            if (minute >= 10 && second >= 10 && hour >= 10) // hiçbiri 
+                time = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            else if (minute < 10 && second >= 10 && hour >= 10) // dakika
+                time = hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+            else if (minute >= 10 && second < 10 && hour >= 10) // saniye
+                time = hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
+            else if (minute >= 10 && second >= 10 && hour < 10) // saat
+                time = ":0" + hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            else if (minute < 10 && second < 10 && hour >= 10) // dakika ve saniye
+                time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second >= 10 && hour < 10) // saat ve dakika
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+            else if (minute >= 10 && second < 10 && hour < 10) // saat ve saniye
+                time = ":0" + hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second < 10 && hour < 10) // hepsi
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+
+            return time;
+
+        }
+
+        private void userIdButton_Click(object sender, EventArgs e)
+        {
+            string user_id = userIdTextBox.Text;
+
+            printCurrentTimeAccordingToUser(user_id);
         }
     }
 }
+
+
+// BUTTON BASMA OLAYI YAPILCAK, BECEREMEDİM!!!!!!!!!
