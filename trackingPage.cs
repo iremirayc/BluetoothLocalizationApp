@@ -246,16 +246,16 @@ namespace HeatmapApp
         private void user_id_button_Click(object sender, EventArgs e)
         {
             string user_id = user_id_textBox.Text;
+            string time = timeTextBox.Text;
 
-            printPathAccordingToUser(user_id);
+            printPathAccordingToUser(user_id, time);
 
         }
 
         static FirebaseConneciton con = new FirebaseConneciton();
-        private async void printPathAccordingToUser(string id)
+        private async void printPathAccordingToUser(string id, string time)
         {
             List<List<string>> locaitons = new List<List<string>>();
-            string time = "13:55:35";
             int nullCount = 0;
             while (true)
             {

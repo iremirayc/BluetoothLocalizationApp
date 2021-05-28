@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BLE_DB.Database;
+using BLE_DB.Models;
+using HeatmapApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,10 +27,10 @@ namespace HeatmapApp
 
         public struct HeatPoint
         {
-            public int X;
-            public int Y;
+            public double X;
+            public double Y;
             public byte Intensity;
-            public HeatPoint(int iX, int iY, byte bIntensity)
+            public HeatPoint(double iX, double iY, byte bIntensity)
             {
                 X = iX;
                 Y = iY;
@@ -239,19 +242,162 @@ namespace HeatmapApp
             this.Hide();
         }
 
-        private void heatmapPage_Load(object sender, EventArgs e)
+
+        public List<List<string>> locaitons = new List<List<string>>();
+        static FirebaseConneciton con = new FirebaseConneciton();
+        private async void GetAllDevicesId(string time)
         {
+            string Time = time;
+            int id = 1;
+            int count = 0;
+            List<int> Devices = new List<int>();
+            while (id < 4)
+            {
+                while (true)
+                {
+                    con.client = new FireSharp.FirebaseClient(con.config);
+                    string addr = "Devices/" + id + "/" + time;
+                    con.response = await con.client.GetAsync(addr);
+                    Device device = con.response.ResultAs<Device>();
+                    if (device != null)
+                    {
+                        Devices.Add(id);
+                        Time = time;
+                        break;
+                    }
+                    else
+                    {
+                        count++;
+                        time = ControlTime(time);
+                        if (count > 5)
+                            break;
+                        continue;
+                    }
+
+                }
+                id++;
+            }
+            GetAllData(Devices, Time);
+        }
+
+        private async void GetAllData(List<int> Devices, string time)
+        {
+            int nullCount = 0;
+            int i = 0;
+            string Time = time;
+            while (i < Devices.Count)
+            {
+                while (true)
+                {
+                    int id = Devices[i];
+                    con.client = new FireSharp.FirebaseClient(con.config);
+                    string addr = "Devices/" + id + "/" + time;
+                    con.response = await con.client.GetAsync(addr);
+
+                    Device device = con.response.ResultAs<Device>();
+                    if (device == null)
+                    {
+                        nullCount++;
+                        if (nullCount > 3)
+                            break;
+                        time = ControlTime(time);
+                        continue;
+                    }
+                    else
+                    {
+                        nullCount = 0;
+                        List<string> pos = new List<string>();
+                        pos.Add((device.posX).ToString());
+                        pos.Add((device.posY).ToString());
+                        locaitons.Add(pos);
+                        time = ControlTime(time);
+                    }
+                }
+                i++;
+                time = Time;
+            }
+            createBitMap(locaitons);
+        }
+
+        private void createBitMap(List<List<string>> locaitons)
+        {
+            for (int i = 0; i < locaitons.Count; i++)
+            {
+                HeatPoints.Add(new HeatPoint(Double.Parse(locaitons[i][0]), Double.Parse(locaitons[i][1]), 100));
+            }
+
+        }
+
+
+        private string ControlTime(string time)
+        {
+            string[] times = time.Split(':');
+            int hour = Int32.Parse(times[0]);
+            int minute = Int32.Parse(times[1]);
+            int second = Int32.Parse(times[2]);
+
+            if (second < 59)
+                second++;
+            else
+            {
+                if (minute < 59)
+                {
+                    minute++;
+                    second = 0;
+                }
+                else
+                {
+                    if (hour < 23)
+                    {
+                        minute = 0;
+                        second = 0;
+                        hour++;
+                    }
+                    else
+                    {
+                        minute = 0;
+                        second = 0;
+                        hour = 0;
+                    }
+
+                }
+
+            }
+            if (minute > 10 && second > 10 && hour > 10) // hiçbiri 
+                time = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            else if (minute < 10 && second > 10 && hour > 10) // dakika
+                time = hour.ToString() + ":0" + minute.ToString() + second.ToString();
+            else if (minute > 10 && second < 10 && hour > 10) // saniye
+                time = hour.ToString() + minute.ToString() + ":0" + second.ToString();
+            else if (minute > 10 && second > 10 && hour < 10) // saat
+                time = ":0" + hour.ToString() + minute.ToString() + second.ToString();
+            else if (minute < 10 && second < 10 && hour > 10) // dakika ve saniye
+                time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second > 10 && hour < 10) // saat ve dakika
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + second.ToString();
+            else if (minute > 10 && second < 10 && hour < 10) // saat ve saniye
+                time = ":0" + hour.ToString() + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second < 10 && hour < 10) // hepsi
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+
+            return time;
+
+        }
+
+        private void timeButton_Click(object sender, EventArgs e)
+        {
+            string time = timeTextBox.Text;
+            GetAllDevicesId(time);
+
             // Create new memory bitmap the same size as the picture box
             Bitmap bMap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
 
-            HeatPoints.Add(new HeatPoint(100, 250, 60));
-            HeatPoints.Add(new HeatPoint(50, 200, 40));
-            HeatPoints.Add(new HeatPoint(100, 150, 20));
-            HeatPoints.Add(new HeatPoint(500, 460, 200));
+            createBitMap(locaitons);
             // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
             bMap = CreateIntensityMask(bMap, HeatPoints);
             // Colorize the memory bitmap and assign it as the picture boxes image
             pictureBox1.Image = Colorize(bMap, 255);
+
         }
     }
 }

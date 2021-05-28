@@ -44,6 +44,7 @@ namespace HeatmapApp
             this.user_id_textBox = new System.Windows.Forms.TextBox();
             this.user_id_button = new System.Windows.Forms.Button();
             this.map_pictureBox = new System.Windows.Forms.PictureBox();
+            this.timeTextBox = new System.Windows.Forms.TextBox();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -154,7 +155,7 @@ namespace HeatmapApp
             // 
             // user_id_textBox
             // 
-            this.user_id_textBox.Location = new System.Drawing.Point(287, 204);
+            this.user_id_textBox.Location = new System.Drawing.Point(235, 219);
             this.user_id_textBox.Margin = new System.Windows.Forms.Padding(2);
             this.user_id_textBox.Name = "user_id_textBox";
             this.user_id_textBox.Size = new System.Drawing.Size(76, 20);
@@ -163,7 +164,7 @@ namespace HeatmapApp
             // 
             // user_id_button
             // 
-            this.user_id_button.Location = new System.Drawing.Point(296, 228);
+            this.user_id_button.Location = new System.Drawing.Point(244, 243);
             this.user_id_button.Margin = new System.Windows.Forms.Padding(2);
             this.user_id_button.Name = "user_id_button";
             this.user_id_button.Size = new System.Drawing.Size(56, 19);
@@ -180,12 +181,21 @@ namespace HeatmapApp
             this.map_pictureBox.TabIndex = 6;
             this.map_pictureBox.TabStop = false;
             // 
+            // timeTextBox
+            // 
+            this.timeTextBox.Location = new System.Drawing.Point(235, 194);
+            this.timeTextBox.Name = "timeTextBox";
+            this.timeTextBox.Size = new System.Drawing.Size(76, 20);
+            this.timeTextBox.TabIndex = 7;
+            this.timeTextBox.Text = "Starting Time";
+            // 
             // trackingPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.ClientSize = new System.Drawing.Size(1028, 578);
+            this.Controls.Add(this.timeTextBox);
             this.Controls.Add(this.map_pictureBox);
             this.Controls.Add(this.user_id_button);
             this.Controls.Add(this.user_id_textBox);
@@ -218,6 +228,7 @@ namespace HeatmapApp
         private Button user_id_button;
         private PictureBox map_pictureBox;
         private Button currentLocationButton;
+        private TextBox timeTextBox;
     }
 }
 
