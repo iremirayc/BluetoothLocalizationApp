@@ -73,6 +73,12 @@
     </Compile>
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\DeviceId.cs" />
+    <Compile Include="registerPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="registerPage.Designer.cs">
+      <DependentUpon>registerPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="trackingPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="mainPage.resx">
       <DependentUpon>mainPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="registerPage.resx">
+      <DependentUpon>registerPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="trackingPage.resx">
       <DependentUpon>trackingPage.cs</DependentUpon>

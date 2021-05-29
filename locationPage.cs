@@ -111,7 +111,6 @@ namespace HeatmapApp
             return (radians);
         }
 
-
         public static Bitmap Colorize(Bitmap Mask, byte Alpha)
         {
             // Create new bitmap to act as a work surface for the colorization process
@@ -227,20 +226,6 @@ namespace HeatmapApp
             return target;
         }
 
-        private void showHeatmap_Click(object sender, EventArgs e)
-        {
-            heatmapPage form = new heatmapPage();
-            form.Show();
-            this.Hide();
-        }
-
-        private void userTrace_Click(object sender, EventArgs e)
-        {
-            trackingPage form = new trackingPage();
-            form.Show();
-            this.Hide();
-        }
-
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void readAccordingToTime(string id, string time)
         {
@@ -268,13 +253,6 @@ namespace HeatmapApp
             {
                 MessageBox.Show("!!!!!!!!!");
             }
-        }
-
-        private void find_loc_button_Click(object sender, EventArgs e)
-        {
-            string userID = UserID_textBox.Text;
-            string time = time_textBox.Text;
-            readAccordingToTime(userID, time);
         }
 
         private void createBitMap(Device device)
@@ -342,6 +320,33 @@ namespace HeatmapApp
 
             return time;
 
+        }
+
+        private void currentLocationButton_Click(object sender, EventArgs e)
+        {
+            currentLocationPage form = new currentLocationPage();
+            form.Show();
+            this.Hide();
+        }
+        private void showHeatmap_Click(object sender, EventArgs e)
+        {
+            heatmapPage form = new heatmapPage();
+            form.Show();
+            this.Hide();
+        }
+
+        private void userTrace_Click(object sender, EventArgs e)
+        {
+            trackingPage form = new trackingPage();
+            form.Show();
+            this.Hide();
+        }
+
+        private void findButton_Click(object sender, EventArgs e)
+        {
+            string userID = UserIDTextBox.Text;
+            string time = timeTextBox.Text;
+            readAccordingToTime(userID, time);
         }
     }
 }

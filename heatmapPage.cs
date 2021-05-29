@@ -384,7 +384,7 @@ namespace HeatmapApp
 
         }
 
-        private void timeButton_Click(object sender, EventArgs e)
+        private void enterButton_Click(object sender, EventArgs e)
         {
             string time = timeTextBox.Text;
             GetAllDevicesId(time);
@@ -398,6 +398,13 @@ namespace HeatmapApp
             // Colorize the memory bitmap and assign it as the picture boxes image
             pictureBox1.Image = Colorize(bMap, 255);
 
+        }
+
+        private void currentLocationButton_Click(object sender, EventArgs e)
+        {
+            currentLocationPage form = new currentLocationPage();
+            form.Show();
+            this.Hide();
         }
     }
 }

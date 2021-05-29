@@ -227,20 +227,6 @@ namespace HeatmapApp
             return target;
         }
 
-        private void showHeatmap_Click(object sender, EventArgs e)
-        {
-            heatmapPage form = new heatmapPage();
-            form.Show();
-            this.Hide();
-        }
-
-        private void findLocation_Click(object sender, EventArgs e)
-        {
-            locationPage form = new locationPage();
-            form.Show();
-            this.Hide();
-        }
-
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void printCurrentTimeAccordingToUser(string id)
         {
@@ -340,11 +326,31 @@ namespace HeatmapApp
 
         }
 
-        private void userIdButton_Click(object sender, EventArgs e)
+        private void enterButton_Click(object sender, EventArgs e)
         {
-            string user_id = userIdTextBox.Text;
+            string userID = userIDTextBox.Text;
+            printCurrentTimeAccordingToUser(userID);
+        }
 
-            printCurrentTimeAccordingToUser(user_id);
+        private void userTraceButton_Click(object sender, EventArgs e)
+        {
+            trackingPage form = new trackingPage();
+            form.Show();
+            this.Hide();
+        }
+
+        private void findLocationButton_Click(object sender, EventArgs e)
+        {
+            locationPage form = new locationPage();
+            form.Show();
+            this.Hide();
+        }
+
+        private void showHeatmapButton_Click(object sender, EventArgs e)
+        {
+            heatmapPage form = new heatmapPage();
+            form.Show();
+            this.Hide();
         }
     }
 }

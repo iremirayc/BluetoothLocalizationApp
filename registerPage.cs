@@ -10,46 +10,44 @@ using System.Windows.Forms;
 
 namespace HeatmapApp
 {
-    public partial class mainPage : Form
+    public partial class registerPage : Form
     {
-        public mainPage()
+        public registerPage()
         {
             InitializeComponent();
         }
 
-        private void showHeatmap_Click(object sender, EventArgs e)
+        private void showHeatmapButton_Click(object sender, EventArgs e)
         {
             heatmapPage form = new heatmapPage();
             form.Show();
             this.Hide();
         }
 
-        private void findLocation_Click(object sender, EventArgs e)
+        private void findLocationButton_Click(object sender, EventArgs e)
         {
             locationPage form = new locationPage();
             form.Show();
             this.Hide();
         }
 
-        private void userTrace_Click(object sender, EventArgs e)
+        private void userTraceButton_Click(object sender, EventArgs e)
         {
             trackingPage form = new trackingPage();
             form.Show();
             this.Hide();
         }
 
-        private void current_loc_button_Click(object sender, EventArgs e)
+        private void currentLocationButton_Click(object sender, EventArgs e)
         {
             currentLocationPage form = new currentLocationPage();
             form.Show();
             this.Hide();
         }
 
-        private void newMemberButton_Click(object sender, EventArgs e)
+        private void registerButton_Click(object sender, EventArgs e)
         {
-            registerPage form = new registerPage();
-            form.Show();
-            this.Hide();
+            
         }
     }
 }

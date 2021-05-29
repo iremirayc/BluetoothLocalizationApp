@@ -167,10 +167,7 @@ namespace HeatmapApp
             };
             var p1 = new Point(0, 0);
             var p2 = new Point(num, 0);
-            var lgBrush = new LinearGradientBrush(p2,
-            p1,
-            A,
-            B);
+            var lgBrush = new LinearGradientBrush(p2, p1, A, B);
             lgBrush.InterpolationColors = blend;
             var pen = new Pen(lgBrush);
             var bmp = new Bitmap(num, 1);
@@ -227,29 +224,6 @@ namespace HeatmapApp
             graphics.DrawImage(source2, 0, 0);
 
             return target;
-        }
-
-        private void showHeatmap_Click(object sender, EventArgs e)
-        {
-            heatmapPage form = new heatmapPage();
-            form.Show();
-            this.Hide();
-        }
-
-        private void findLocation_Click(object sender, EventArgs e)
-        {
-            locationPage form = new locationPage();
-            form.Show();
-            this.Hide();
-        }
-
-        private void user_id_button_Click(object sender, EventArgs e)
-        {
-            string user_id = user_id_textBox.Text;
-            string time = timeTextBox.Text;
-
-            printPathAccordingToUser(user_id, time);
-
         }
 
         static FirebaseConneciton con = new FirebaseConneciton();
@@ -333,30 +307,56 @@ namespace HeatmapApp
                         second = 0;
                         hour = 0;
                     }
-
                 }
-
             }
-            if (minute > 10 && second > 10 && hour > 10) // hiçbiri 
+
+            if (minute > 10 && second > 10 && hour > 10)        // hiçbiri 
                 time = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
-            else if (minute < 10 && second > 10 && hour > 10) // dakika
+            else if (minute < 10 && second > 10 && hour > 10)   // dakika
                 time = hour.ToString() + ":0" + minute.ToString() + second.ToString();
-            else if (minute > 10 && second < 10 && hour > 10) // saniye
+            else if (minute > 10 && second < 10 && hour > 10)   // saniye
                 time = hour.ToString() + minute.ToString() + ":0" + second.ToString();
-            else if (minute > 10 && second > 10 && hour < 10) // saat
+            else if (minute > 10 && second > 10 && hour < 10)   // saat
                 time = ":0" + hour.ToString() + minute.ToString() + second.ToString();
-            else if (minute < 10 && second < 10 && hour > 10) // dakika ve saniye
+            else if (minute < 10 && second < 10 && hour > 10)   // dakika ve saniye
                 time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
-            else if (minute < 10 && second > 10 && hour < 10) // saat ve dakika
+            else if (minute < 10 && second > 10 && hour < 10)   // saat ve dakika
                 time = ":0" + hour.ToString() + ":0" + minute.ToString() + second.ToString();
-            else if (minute > 10 && second < 10 && hour < 10) // saat ve saniye
+            else if (minute > 10 && second < 10 && hour < 10)   // saat ve saniye
                 time = ":0" + hour.ToString() + minute.ToString() + ":0" + second.ToString();
-            else if (minute < 10 && second < 10 && hour < 10) // hepsi
+            else if (minute < 10 && second < 10 && hour < 10)   // hepsi
                 time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
 
             return time;
+        }
+        private void showHeatmap_Click(object sender, EventArgs e)
+        {
+            heatmapPage form = new heatmapPage();
+            form.Show();
+            this.Hide();
+        }
+
+        private void findLocation_Click(object sender, EventArgs e)
+        {
+            locationPage form = new locationPage();
+            form.Show();
+            this.Hide();
+        }
+
+        private void enterButton_Click(object sender, EventArgs e)
+        {
+            string userID = userIDTextBox.Text;
+            string time = timeTextBox.Text;
+
+            printPathAccordingToUser(userID, time);
 
         }
 
+        private void currentLocationButton_Click(object sender, EventArgs e)
+        {
+            currentLocationPage form = new currentLocationPage();
+            form.Show();
+            this.Hide();
+        }
     }
 }
