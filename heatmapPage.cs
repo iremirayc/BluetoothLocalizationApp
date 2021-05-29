@@ -406,5 +406,12 @@ namespace HeatmapApp
             form.Show();
             this.Hide();
         }
+
+        private void backHomeButton_Click(object sender, EventArgs e)
+        {
+            mainPage form = new mainPage();
+            form.Show();
+            this.Hide();
+        }
     }
 }

@@ -38,6 +38,7 @@ namespace HeatmapApp
             this.findLocationTitle = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.rightpanel = new System.Windows.Forms.Panel();
+            this.backHomeButton = new System.Windows.Forms.Button();
             this.currentLocationButton = new System.Windows.Forms.Button();
             this.userTrace = new System.Windows.Forms.Button();
             this.findLocation = new System.Windows.Forms.Button();
@@ -101,6 +102,7 @@ namespace HeatmapApp
             // rightpanel
             // 
             this.rightpanel.BackColor = System.Drawing.Color.SeaGreen;
+            this.rightpanel.Controls.Add(this.backHomeButton);
             this.rightpanel.Controls.Add(this.currentLocationButton);
             this.rightpanel.Controls.Add(this.userTrace);
             this.rightpanel.Controls.Add(this.findLocation);
@@ -110,6 +112,20 @@ namespace HeatmapApp
             this.rightpanel.Name = "rightpanel";
             this.rightpanel.Size = new System.Drawing.Size(175, 1060);
             this.rightpanel.TabIndex = 3;
+            // 
+            // backHomeButton
+            // 
+            this.backHomeButton.BackColor = System.Drawing.Color.Transparent;
+            this.backHomeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.backHomeButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.backHomeButton.Location = new System.Drawing.Point(12, 278);
+            this.backHomeButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.backHomeButton.Name = "backHomeButton";
+            this.backHomeButton.Size = new System.Drawing.Size(148, 45);
+            this.backHomeButton.TabIndex = 17;
+            this.backHomeButton.Text = "Home Page";
+            this.backHomeButton.UseVisualStyleBackColor = false;
+            this.backHomeButton.Click += new System.EventHandler(this.backHomeButton_Click);
             // 
             // currentLocationButton
             // 
@@ -151,7 +167,7 @@ namespace HeatmapApp
             // 
             // UserIDTextBox
             // 
-            this.UserIDTextBox.Location = new System.Drawing.Point(303, 225);
+            this.UserIDTextBox.Location = new System.Drawing.Point(310, 260);
             this.UserIDTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UserIDTextBox.Name = "UserIDTextBox";
             this.UserIDTextBox.Size = new System.Drawing.Size(229, 22);
@@ -160,7 +176,7 @@ namespace HeatmapApp
             // 
             // timeTextBox
             // 
-            this.timeTextBox.Location = new System.Drawing.Point(303, 265);
+            this.timeTextBox.Location = new System.Drawing.Point(310, 300);
             this.timeTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.timeTextBox.Name = "timeTextBox";
             this.timeTextBox.Size = new System.Drawing.Size(229, 22);
@@ -178,10 +194,10 @@ namespace HeatmapApp
             // 
             // findButton
             // 
-            this.findButton.Location = new System.Drawing.Point(374, 305);
+            this.findButton.Location = new System.Drawing.Point(380, 340);
             this.findButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.findButton.Name = "findButton";
-            this.findButton.Size = new System.Drawing.Size(82, 32);
+            this.findButton.Size = new System.Drawing.Size(100, 30);
             this.findButton.TabIndex = 14;
             this.findButton.Text = "Find";
             this.findButton.UseVisualStyleBackColor = true;
@@ -226,6 +242,7 @@ namespace HeatmapApp
         private PictureBox mapPictureBox;
         private Button currentLocationButton;
         private Button findButton;
+        private Button backHomeButton;
     }
 }
 

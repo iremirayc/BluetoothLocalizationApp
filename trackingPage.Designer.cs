@@ -42,9 +42,10 @@ namespace HeatmapApp
             this.userTraceButton = new System.Windows.Forms.Button();
             this.findLocationButton = new System.Windows.Forms.Button();
             this.userIDTextBox = new System.Windows.Forms.TextBox();
-            this.enterButton = new System.Windows.Forms.Button();
             this.map_pictureBox = new System.Windows.Forms.PictureBox();
             this.timeTextBox = new System.Windows.Forms.TextBox();
+            this.backHomeButton = new System.Windows.Forms.Button();
+            this.enterButton = new System.Windows.Forms.Button();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -101,6 +102,7 @@ namespace HeatmapApp
             // rightpanel
             // 
             this.rightpanel.BackColor = System.Drawing.Color.SeaGreen;
+            this.rightpanel.Controls.Add(this.backHomeButton);
             this.rightpanel.Controls.Add(this.currentLocationButton);
             this.rightpanel.Controls.Add(this.userTraceButton);
             this.rightpanel.Controls.Add(this.findLocationButton);
@@ -154,23 +156,12 @@ namespace HeatmapApp
             // 
             // userIDTextBox
             // 
-            this.userIDTextBox.Location = new System.Drawing.Point(313, 270);
+            this.userIDTextBox.Location = new System.Drawing.Point(310, 300);
             this.userIDTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.userIDTextBox.Name = "userIDTextBox";
-            this.userIDTextBox.Size = new System.Drawing.Size(100, 22);
+            this.userIDTextBox.Size = new System.Drawing.Size(229, 22);
             this.userIDTextBox.TabIndex = 4;
             this.userIDTextBox.Text = "User ID";
-            // 
-            // enterButton
-            // 
-            this.enterButton.Location = new System.Drawing.Point(325, 299);
-            this.enterButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.enterButton.Name = "enterButton";
-            this.enterButton.Size = new System.Drawing.Size(75, 23);
-            this.enterButton.TabIndex = 5;
-            this.enterButton.Text = "Enter";
-            this.enterButton.UseVisualStyleBackColor = true;
-            this.enterButton.Click += new System.EventHandler(this.enterButton_Click);
             // 
             // map_pictureBox
             // 
@@ -183,12 +174,36 @@ namespace HeatmapApp
             // 
             // timeTextBox
             // 
-            this.timeTextBox.Location = new System.Drawing.Point(313, 239);
+            this.timeTextBox.Location = new System.Drawing.Point(310, 260);
             this.timeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.timeTextBox.Name = "timeTextBox";
-            this.timeTextBox.Size = new System.Drawing.Size(100, 22);
+            this.timeTextBox.Size = new System.Drawing.Size(229, 22);
             this.timeTextBox.TabIndex = 7;
             this.timeTextBox.Text = "Starting Time";
+            // 
+            // backHomeButton
+            // 
+            this.backHomeButton.BackColor = System.Drawing.Color.Transparent;
+            this.backHomeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.backHomeButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.backHomeButton.Location = new System.Drawing.Point(12, 278);
+            this.backHomeButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.backHomeButton.Name = "backHomeButton";
+            this.backHomeButton.Size = new System.Drawing.Size(148, 45);
+            this.backHomeButton.TabIndex = 17;
+            this.backHomeButton.Text = "Home Page";
+            this.backHomeButton.UseVisualStyleBackColor = false;
+            this.backHomeButton.Click += new System.EventHandler(this.backHomeButton_Click);
+            // 
+            // enterButton
+            // 
+            this.enterButton.Location = new System.Drawing.Point(380, 340);
+            this.enterButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.enterButton.Name = "enterButton";
+            this.enterButton.Size = new System.Drawing.Size(100, 30);
+            this.enterButton.TabIndex = 14;
+            this.enterButton.Text = "Enter";
+            this.enterButton.UseVisualStyleBackColor = true;
             // 
             // trackingPage
             // 
@@ -196,9 +211,9 @@ namespace HeatmapApp
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.ClientSize = new System.Drawing.Size(1371, 711);
+            this.Controls.Add(this.enterButton);
             this.Controls.Add(this.timeTextBox);
             this.Controls.Add(this.map_pictureBox);
-            this.Controls.Add(this.enterButton);
             this.Controls.Add(this.userIDTextBox);
             this.Controls.Add(this.rightpanel);
             this.Controls.Add(this.abovepanel);
@@ -226,10 +241,11 @@ namespace HeatmapApp
         private Label userTraceTitle;
         private PictureBox pictureBox2;
         private TextBox userIDTextBox;
-        private Button enterButton;
         private PictureBox map_pictureBox;
         private Button currentLocationButton;
         private TextBox timeTextBox;
+        private Button backHomeButton;
+        private Button enterButton;
     }
 }
 

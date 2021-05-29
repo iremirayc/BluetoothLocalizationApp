@@ -43,6 +43,7 @@ namespace HeatmapApp
             this.findLocation = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.newMemberButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -99,6 +100,7 @@ namespace HeatmapApp
             // rightpanel
             // 
             this.rightpanel.BackColor = System.Drawing.Color.SeaGreen;
+            this.rightpanel.Controls.Add(this.button1);
             this.rightpanel.Controls.Add(this.current_loc_button);
             this.rightpanel.Controls.Add(this.userTrace);
             this.rightpanel.Controls.Add(this.findLocation);
@@ -165,6 +167,19 @@ namespace HeatmapApp
             this.newMemberButton.UseVisualStyleBackColor = true;
             this.newMemberButton.Click += new System.EventHandler(this.newMemberButton_Click);
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Firebrick;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button1.Location = new System.Drawing.Point(12, 278);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(148, 45);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Home Page";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // mainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -200,6 +215,7 @@ namespace HeatmapApp
         private Label label1;
         private Button current_loc_button;
         private Button newMemberButton;
+        private Button button1;
     }
 }
 
