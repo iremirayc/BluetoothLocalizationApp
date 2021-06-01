@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -46,7 +47,7 @@ namespace HeatmapApp
             foreach (HeatPoint DataPoint in aHeatPoints)
             {
                 // Render current heat point on draw surface
-                DrawHeatPoint(DrawSurface, DataPoint, 5);
+                DrawHeatPoint(DrawSurface, DataPoint, 30);
             }
             return bSurface;
         }
@@ -111,7 +112,6 @@ namespace HeatmapApp
             return (radians);
         }
 
-
         public static Bitmap Colorize(Bitmap Mask, byte Alpha)
         {
             // Create new bitmap to act as a work surface for the colorization process
@@ -131,6 +131,7 @@ namespace HeatmapApp
             // Send back newly colorized memory bitmap
             return Output;
         }
+
         private static ColorMap[] CreatePaletteIndex(byte Alpha)
         {
             ColorMap[] OutputMap = new ColorMap[256];
@@ -147,15 +148,6 @@ namespace HeatmapApp
             return OutputMap;
         }
 
-        // <summary>
-        /// Creates a mixed color Palette
-        /// </summary>
-        /// <param name="A">Start color (e.g. Color.Green)</param>
-        /// <param name="B">Middle color (e.g. Color.Yellow)</param>
-        /// <param name="C">End color (e.g. Color.Red)</param>
-        /// <param name="num">Length of pallete</param>
-        /// <param name="bgColor">Background color for zero values</param>
-        /// <returns></returns>
         public static Bitmap MixColorPalette(Color A, Color B, Color C, int num, Color bgColor)
         {
             var blend = new ColorBlend(num)
@@ -227,16 +219,20 @@ namespace HeatmapApp
             return target;
         }
 
+        private CancellationTokenSource _canceller;
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void printCurrentTimeAccordingToUser(string id)
         {
             DateTime date = DateTime.Now;
             string format = "HH:mm:ss";
             string time = date.ToString(format);
+            _canceller = new CancellationTokenSource();
+            int i = 0;
             while (true)
             {
-                System.Threading.Thread.Sleep(1000);
-
+                System.Threading.Thread.Sleep(500);
+                if (_canceller.Token.IsCancellationRequested)
+                    break;
                 con.client = new FireSharp.FirebaseClient(con.config);
                 string addr = "Devices/" + id + "/" + time;
                 con.response = await con.client.GetAsync(addr);
@@ -245,6 +241,12 @@ namespace HeatmapApp
 
                 if (device == null)
                 {
+                    i++;
+                    if (i > 8)
+                    {
+                        MessageBox.Show("There is no device with this ID!");
+                        break;
+                    }
                     time = ControlTime(time);
                     continue;
                 }
@@ -255,6 +257,7 @@ namespace HeatmapApp
                     format = "HH:mm:ss";
                     time = date.ToString(format);
                     createBitMap(device);
+                    System.Threading.Thread.Sleep(3000);
                 }
             }
         }
@@ -326,15 +329,13 @@ namespace HeatmapApp
 
         }
 
-        private void enterButton_Click(object sender, EventArgs e)
-        {
-            string userID = userIDTextBox.Text;
-            printCurrentTimeAccordingToUser(userID);
-        }
+
 
         private void userTraceButton_Click(object sender, EventArgs e)
         {
             trackingPage form = new trackingPage();
+            if (_canceller != null)
+                _canceller.Cancel();
             form.Show();
             this.Hide();
         }
@@ -342,6 +343,8 @@ namespace HeatmapApp
         private void findLocationButton_Click(object sender, EventArgs e)
         {
             locationPage form = new locationPage();
+            if (_canceller != null)
+                _canceller.Cancel();
             form.Show();
             this.Hide();
         }
@@ -349,6 +352,8 @@ namespace HeatmapApp
         private void showHeatmapButton_Click(object sender, EventArgs e)
         {
             heatmapPage form = new heatmapPage();
+            if (_canceller != null)
+                _canceller.Cancel();
             form.Show();
             this.Hide();
         }
@@ -356,11 +361,18 @@ namespace HeatmapApp
         private void backHomeButton_Click(object sender, EventArgs e)
         {
             mainPage form = new mainPage();
+            if (_canceller != null)
+                _canceller.Cancel();
             form.Show();
             this.Hide();
         }
+
+        private void enterButton_Click(object sender, EventArgs e)
+        {
+            if (_canceller != null)
+                _canceller.Cancel();
+            string userID = userIDTextBox.Text;
+            printCurrentTimeAccordingToUser(userID);
+        }
     }
 }
-
-
-// BUTTON BASMA OLAYI YAPILCAK, BECEREMEDİM!!!!!!!!!

@@ -72,7 +72,7 @@
       <DependentUpon>locationPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Device.cs" />
-    <Compile Include="Models\DeviceId.cs" />
+    <Compile Include="Models\Visitor.cs" />
     <Compile Include="registerPage.cs">
       <SubType>Form</SubType>
     </Compile>

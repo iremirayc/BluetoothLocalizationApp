@@ -46,7 +46,7 @@ namespace HeatmapApp
             foreach (HeatPoint DataPoint in aHeatPoints)
             {
                 // Render current heat point on draw surface
-                DrawHeatPoint(DrawSurface, DataPoint, 5);
+                DrawHeatPoint(DrawSurface, DataPoint, 20);
             }
             return bSurface;
         }
@@ -229,30 +229,27 @@ namespace HeatmapApp
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void readAccordingToTime(string id, string time)
         {
-            try
-            {
                 con.client = new FireSharp.FirebaseClient(con.config);
                 string addr = "Devices/" + id + "/" + time;
-                con.response = await con.client.GetAsync(addr); // bu kısmı elimle girdim ama bi insanın hangi saatlerde nerede olduğuna burdan bakabiliriz
-                                                                //form üzerinden kişinin bilgileri girilecek ve device ıdsi de girilecek sonrasında hangi zaman aralığında nerde olduğunu kontorl etmek için burası kullanılacak
-                                                                //2 saniyelik aralıklara bakarız, 133:55:30 da nerde dediyse bi kendinsine bi öncesine bakarız bi de sonrasına
-                                                                //hangi zaman dilimnde databasede var ise onu alırız
+                con.response = await con.client.GetAsync(addr);
                 Device device = con.response.ResultAs<Device>();
+                int count = 0;
                 while (device == null)
                 {
                     time = ControlTime(time);
                     con.client = new FireSharp.FirebaseClient(con.config);
                     addr = "Devices/" + id + "/" + time;
-                    con.response = await con.client.GetAsync(addr); 
+                    con.response = await con.client.GetAsync(addr);
                     device = con.response.ResultAs<Device>();
+                    count++;
+                    if (count > 5)
+                    {
+                        MessageBox.Show("Could not Find!");
+                        return;
+                    }
+
                 }
                 createBitMap(device);
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("!!!!!!!!!");
-            }
         }
 
         private void createBitMap(Device device)
@@ -301,20 +298,20 @@ namespace HeatmapApp
                 }
 
             }
-            if (minute > 10 && second > 10 && hour > 10) // hiçbiri 
+            if (minute >= 10 && second >= 10 && hour >= 10) // hiçbiri 
                 time = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
-            else if (minute < 10 && second > 10 && hour > 10) // dakika
-                time = hour.ToString() + ":0" + minute.ToString() + second.ToString();
-            else if (minute > 10 && second < 10 && hour > 10) // saniye
-                time = hour.ToString() + minute.ToString() + ":0" + second.ToString();
-            else if (minute > 10 && second > 10 && hour < 10) // saat
-                time = ":0" + hour.ToString() + minute.ToString() + second.ToString();
-            else if (minute < 10 && second < 10 && hour > 10) // dakika ve saniye
+            else if (minute < 10 && second >= 10 && hour >= 10) // dakika
+                time = hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+            else if (minute >= 10 && second < 10 && hour >= 10) // saniye
+                time = hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
+            else if (minute >= 10 && second >= 10 && hour < 10) // saat
+                time = ":0" + hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            else if (minute < 10 && second < 10 && hour >= 10) // dakika ve saniye
                 time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
-            else if (minute < 10 && second > 10 && hour < 10) // saat ve dakika
-                time = ":0" + hour.ToString() + ":0" + minute.ToString() + second.ToString();
-            else if (minute > 10 && second < 10 && hour < 10) // saat ve saniye
-                time = ":0" + hour.ToString() + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second >= 10 && hour < 10) // saat ve dakika
+                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+            else if (minute >= 10 && second < 10 && hour < 10) // saat ve saniye
+                time = ":0" + hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
             else if (minute < 10 && second < 10 && hour < 10) // hepsi
                 time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
 
@@ -342,18 +339,18 @@ namespace HeatmapApp
             this.Hide();
         }
 
-        private void findButton_Click(object sender, EventArgs e)
-        {
-            string userID = UserIDTextBox.Text;
-            string time = timeTextBox.Text;
-            readAccordingToTime(userID, time);
-        }
-
         private void backHomeButton_Click(object sender, EventArgs e)
         {
             mainPage form = new mainPage();
             form.Show();
             this.Hide();
+        }
+
+        private void findButton_Click(object sender, EventArgs e)
+        {
+            string userID = UserIDTextBox.Text;
+            string time = timeTextBox.Text;
+            readAccordingToTime(userID, time);
         }
     }
 }

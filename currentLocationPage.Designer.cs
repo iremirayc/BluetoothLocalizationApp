@@ -42,6 +42,7 @@ namespace HeatmapApp
             this.map_pictureBox = new System.Windows.Forms.PictureBox();
             this.userIDTextBox = new System.Windows.Forms.TextBox();
             this.enterButton = new System.Windows.Forms.Button();
+            this.userIDLabel = new System.Windows.Forms.Label();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -50,10 +51,10 @@ namespace HeatmapApp
             // 
             // showHeatmapButton
             // 
-            this.showHeatmapButton.Location = new System.Drawing.Point(12, 38);
-            this.showHeatmapButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.showHeatmapButton.Location = new System.Drawing.Point(9, 31);
+            this.showHeatmapButton.Margin = new System.Windows.Forms.Padding(2);
             this.showHeatmapButton.Name = "showHeatmapButton";
-            this.showHeatmapButton.Size = new System.Drawing.Size(148, 45);
+            this.showHeatmapButton.Size = new System.Drawing.Size(111, 37);
             this.showHeatmapButton.TabIndex = 1;
             this.showHeatmapButton.Text = "Show Heatmap";
             this.showHeatmapButton.UseVisualStyleBackColor = true;
@@ -65,9 +66,9 @@ namespace HeatmapApp
             this.abovepanel.Controls.Add(this.label);
             this.abovepanel.Controls.Add(this.pictureBox2);
             this.abovepanel.Location = new System.Drawing.Point(0, -1);
-            this.abovepanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.abovepanel.Margin = new System.Windows.Forms.Padding(2);
             this.abovepanel.Name = "abovepanel";
-            this.abovepanel.Size = new System.Drawing.Size(2051, 110);
+            this.abovepanel.Size = new System.Drawing.Size(1538, 89);
             this.abovepanel.TabIndex = 7;
             // 
             // label
@@ -75,9 +76,10 @@ namespace HeatmapApp
             this.label.AutoSize = true;
             this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.label.Location = new System.Drawing.Point(950, 45);
+            this.label.Location = new System.Drawing.Point(712, 37);
+            this.label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(337, 36);
+            this.label.Size = new System.Drawing.Size(276, 29);
             this.label.TabIndex = 1;
             this.label.Text = "CURRENT LOCATION";
             this.label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -87,10 +89,10 @@ namespace HeatmapApp
             this.pictureBox2.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(20, 10);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox2.Location = new System.Drawing.Point(15, 8);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(80, 80);
+            this.pictureBox2.Size = new System.Drawing.Size(60, 65);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
@@ -103,10 +105,10 @@ namespace HeatmapApp
             this.rightpanel.Controls.Add(this.userTraceButton);
             this.rightpanel.Controls.Add(this.findLocationButton);
             this.rightpanel.Controls.Add(this.showHeatmapButton);
-            this.rightpanel.Location = new System.Drawing.Point(0, 103);
-            this.rightpanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.rightpanel.Location = new System.Drawing.Point(0, 84);
+            this.rightpanel.Margin = new System.Windows.Forms.Padding(2);
             this.rightpanel.Name = "rightpanel";
-            this.rightpanel.Size = new System.Drawing.Size(175, 1060);
+            this.rightpanel.Size = new System.Drawing.Size(131, 861);
             this.rightpanel.TabIndex = 8;
             // 
             // backHomeButton
@@ -114,10 +116,10 @@ namespace HeatmapApp
             this.backHomeButton.BackColor = System.Drawing.Color.Transparent;
             this.backHomeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.backHomeButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.backHomeButton.Location = new System.Drawing.Point(12, 278);
-            this.backHomeButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.backHomeButton.Location = new System.Drawing.Point(9, 226);
+            this.backHomeButton.Margin = new System.Windows.Forms.Padding(2);
             this.backHomeButton.Name = "backHomeButton";
-            this.backHomeButton.Size = new System.Drawing.Size(148, 45);
+            this.backHomeButton.Size = new System.Drawing.Size(111, 37);
             this.backHomeButton.TabIndex = 16;
             this.backHomeButton.Text = "Home Page";
             this.backHomeButton.UseVisualStyleBackColor = false;
@@ -128,10 +130,10 @@ namespace HeatmapApp
             this.currentLocationButton.BackColor = System.Drawing.Color.Firebrick;
             this.currentLocationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.currentLocationButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.currentLocationButton.Location = new System.Drawing.Point(12, 218);
-            this.currentLocationButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.currentLocationButton.Location = new System.Drawing.Point(9, 177);
+            this.currentLocationButton.Margin = new System.Windows.Forms.Padding(2);
             this.currentLocationButton.Name = "currentLocationButton";
-            this.currentLocationButton.Size = new System.Drawing.Size(148, 45);
+            this.currentLocationButton.Size = new System.Drawing.Size(111, 37);
             this.currentLocationButton.TabIndex = 4;
             this.currentLocationButton.Text = "Current Location";
             this.currentLocationButton.UseVisualStyleBackColor = false;
@@ -141,10 +143,10 @@ namespace HeatmapApp
             this.userTraceButton.BackColor = System.Drawing.Color.Transparent;
             this.userTraceButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.userTraceButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.userTraceButton.Location = new System.Drawing.Point(12, 158);
-            this.userTraceButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.userTraceButton.Location = new System.Drawing.Point(9, 128);
+            this.userTraceButton.Margin = new System.Windows.Forms.Padding(2);
             this.userTraceButton.Name = "userTraceButton";
-            this.userTraceButton.Size = new System.Drawing.Size(148, 45);
+            this.userTraceButton.Size = new System.Drawing.Size(111, 37);
             this.userTraceButton.TabIndex = 0;
             this.userTraceButton.Text = "User Trace";
             this.userTraceButton.UseVisualStyleBackColor = false;
@@ -155,10 +157,10 @@ namespace HeatmapApp
             this.findLocationButton.BackColor = System.Drawing.Color.Transparent;
             this.findLocationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.findLocationButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.findLocationButton.Location = new System.Drawing.Point(12, 98);
-            this.findLocationButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.findLocationButton.Location = new System.Drawing.Point(9, 80);
+            this.findLocationButton.Margin = new System.Windows.Forms.Padding(2);
             this.findLocationButton.Name = "findLocationButton";
-            this.findLocationButton.Size = new System.Drawing.Size(148, 45);
+            this.findLocationButton.Size = new System.Drawing.Size(111, 37);
             this.findLocationButton.TabIndex = 0;
             this.findLocationButton.Text = "Find Location";
             this.findLocationButton.UseVisualStyleBackColor = false;
@@ -166,45 +168,52 @@ namespace HeatmapApp
             // 
             // map_pictureBox
             // 
-            this.map_pictureBox.Location = new System.Drawing.Point(700, 160);
-            this.map_pictureBox.Margin = new System.Windows.Forms.Padding(4);
+            this.map_pictureBox.Location = new System.Drawing.Point(525, 130);
             this.map_pictureBox.Name = "map_pictureBox";
-            this.map_pictureBox.Size = new System.Drawing.Size(900, 800);
+            this.map_pictureBox.Size = new System.Drawing.Size(675, 650);
             this.map_pictureBox.TabIndex = 11;
             this.map_pictureBox.TabStop = false;
             // 
             // userIDTextBox
             // 
-            this.userIDTextBox.Location = new System.Drawing.Point(310, 260);
-            this.userIDTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.userIDTextBox.Location = new System.Drawing.Point(232, 211);
             this.userIDTextBox.Name = "userIDTextBox";
-            this.userIDTextBox.Size = new System.Drawing.Size(229, 22);
+            this.userIDTextBox.Size = new System.Drawing.Size(173, 20);
             this.userIDTextBox.TabIndex = 13;
-            this.userIDTextBox.Text = "User ID";
             // 
             // enterButton
             // 
-            this.enterButton.Location = new System.Drawing.Point(380, 300);
-            this.enterButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.enterButton.Location = new System.Drawing.Point(285, 244);
+            this.enterButton.Margin = new System.Windows.Forms.Padding(2);
             this.enterButton.Name = "enterButton";
-            this.enterButton.Size = new System.Drawing.Size(100, 30);
+            this.enterButton.Size = new System.Drawing.Size(75, 24);
             this.enterButton.TabIndex = 15;
             this.enterButton.Text = "Enter";
             this.enterButton.UseVisualStyleBackColor = true;
+            this.enterButton.Click += new System.EventHandler(this.enterButton_Click);
+            // 
+            // userIDLabel
+            // 
+            this.userIDLabel.AutoSize = true;
+            this.userIDLabel.Location = new System.Drawing.Point(174, 214);
+            this.userIDLabel.Name = "userIDLabel";
+            this.userIDLabel.Size = new System.Drawing.Size(52, 13);
+            this.userIDLabel.TabIndex = 16;
+            this.userIDLabel.Text = "User ID : ";
             // 
             // currentLocationPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
-            this.ClientSize = new System.Drawing.Size(1827, 922);
+            this.ClientSize = new System.Drawing.Size(1028, 609);
+            this.Controls.Add(this.userIDLabel);
             this.Controls.Add(this.enterButton);
             this.Controls.Add(this.userIDTextBox);
             this.Controls.Add(this.abovepanel);
             this.Controls.Add(this.rightpanel);
             this.Controls.Add(this.map_pictureBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "currentLocationPage";
             this.Text = "Bluetooth Location Tracking";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -232,5 +241,6 @@ namespace HeatmapApp
         private System.Windows.Forms.TextBox userIDTextBox;
         private System.Windows.Forms.Button enterButton;
         private System.Windows.Forms.Button backHomeButton;
+        private System.Windows.Forms.Label userIDLabel;
     }
 }

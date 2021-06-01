@@ -48,7 +48,7 @@ namespace HeatmapApp
             foreach (HeatPoint DataPoint in aHeatPoints)
             {
                 // Render current heat point on draw surface
-                DrawHeatPoint(DrawSurface, DataPoint, 5);
+                DrawHeatPoint(DrawSurface, DataPoint, 20);
             }
             return bSurface;
         }
@@ -113,7 +113,6 @@ namespace HeatmapApp
             return (radians);
         }
 
-
         public static Bitmap Colorize(Bitmap Mask, byte Alpha)
         {
             // Create new bitmap to act as a work surface for the colorization process
@@ -133,6 +132,7 @@ namespace HeatmapApp
             // Send back newly colorized memory bitmap
             return Output;
         }
+
         private static ColorMap[] CreatePaletteIndex(byte Alpha)
         {
             ColorMap[] OutputMap = new ColorMap[256];
@@ -149,15 +149,6 @@ namespace HeatmapApp
             return OutputMap;
         }
 
-        // <summary>
-        /// Creates a mixed color Palette
-        /// </summary>
-        /// <param name="A">Start color (e.g. Color.Green)</param>
-        /// <param name="B">Middle color (e.g. Color.Yellow)</param>
-        /// <param name="C">End color (e.g. Color.Red)</param>
-        /// <param name="num">Length of pallete</param>
-        /// <param name="bgColor">Background color for zero values</param>
-        /// <returns></returns>
         public static Bitmap MixColorPalette(Color A, Color B, Color C, int num, Color bgColor)
         {
             var blend = new ColorBlend(num)
@@ -207,12 +198,9 @@ namespace HeatmapApp
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
                 throw ex;
-                //return null;
             }
         }
-
 
         public static Image Overlap(Image source1, Image source2)
         {
@@ -226,14 +214,13 @@ namespace HeatmapApp
             return target;
         }
 
+        public List<List<string>> locaitons = new List<List<string>>();
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void printPathAccordingToUser(string id, string time)
         {
-            List<List<string>> locaitons = new List<List<string>>();
             int nullCount = 0;
             while (true)
             {
-
                 con.client = new FireSharp.FirebaseClient(con.config);
                 string addr = "Devices/" + id + "/" + time;
                 con.response = await con.client.GetAsync(addr);
@@ -242,9 +229,14 @@ namespace HeatmapApp
                 if (device == null)
                 {
                     nullCount++;
-                    if (nullCount > 3)
+                    if (nullCount > 4)
+                    {
+                        button1.Visible = true;
+                        label1.Visible = false;
                         break;
-                    time = ControlTime(time);
+                    }
+
+                    time = ControlTime(time, 1);
                     continue;
                 }
                 else
@@ -254,43 +246,40 @@ namespace HeatmapApp
                     pos.Add((device.posX).ToString());
                     pos.Add((device.posY).ToString());
                     locaitons.Add(pos);
-                    time = ControlTime(time);
+                    time = ControlTime(time, 3);
                 }
             }
-
-            createBitMap(locaitons);
-
         }
 
         private void createBitMap(List<List<string>> locaitons)
         {
-            // Create new memory bitmap the same size as the picture box
-            Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
-
             for (int i = 0; i < locaitons.Count; i++)
             {
                 HeatPoints.Add(new HeatPoint(Double.Parse(locaitons[i][0]), Double.Parse(locaitons[i][1]), 100));
             }
+
+            // Create new memory bitmap the same size as the picture box
+            Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
             // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
             bMap = CreateIntensityMask(bMap, HeatPoints);
             // Colorize the memory bitmap and assign it as the picture boxes image
             map_pictureBox.Image = Colorize(bMap, 255);
         }
 
-        private string ControlTime(string time)
+        private string ControlTime(string time, int num)
         {
             string[] times = time.Split(':');
             int hour = Int32.Parse(times[0]);
             int minute = Int32.Parse(times[1]);
             int second = Int32.Parse(times[2]);
 
-            if (second < 59)
-                second++;
+            if (second < 57)
+                second += num;
             else
             {
-                if (minute < 59)
+                if (minute < 57)
                 {
-                    minute++;
+                    minute += num;
                     second = 0;
                 }
                 else
@@ -309,26 +298,27 @@ namespace HeatmapApp
                     }
                 }
             }
-
-            if (minute > 10 && second > 10 && hour > 10)        // hiçbiri 
+            if (minute >= 10 && second >= 10 && hour >= 10) // hiçbiri 
                 time = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
-            else if (minute < 10 && second > 10 && hour > 10)   // dakika
-                time = hour.ToString() + ":0" + minute.ToString() + second.ToString();
-            else if (minute > 10 && second < 10 && hour > 10)   // saniye
-                time = hour.ToString() + minute.ToString() + ":0" + second.ToString();
-            else if (minute > 10 && second > 10 && hour < 10)   // saat
-                time = ":0" + hour.ToString() + minute.ToString() + second.ToString();
-            else if (minute < 10 && second < 10 && hour > 10)   // dakika ve saniye
+            else if (minute < 10 && second >= 10 && hour >= 10) // dakika
+                time = hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+            else if (minute >= 10 && second < 10 && hour >= 10) // saniye
+                time = hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
+            else if (minute >= 10 && second >= 10 && hour < 10) // saat
+                time = "0" + hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            else if (minute < 10 && second < 10 && hour >= 10) // dakika ve saniye
                 time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
-            else if (minute < 10 && second > 10 && hour < 10)   // saat ve dakika
-                time = ":0" + hour.ToString() + ":0" + minute.ToString() + second.ToString();
-            else if (minute > 10 && second < 10 && hour < 10)   // saat ve saniye
-                time = ":0" + hour.ToString() + minute.ToString() + ":0" + second.ToString();
-            else if (minute < 10 && second < 10 && hour < 10)   // hepsi
-                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second >= 10 && hour < 10) // saat ve dakika
+                time = "0" + hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+            else if (minute >= 10 && second < 10 && hour < 10) // saat ve saniye
+                time = "0" + hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
+            else if (minute < 10 && second < 10 && hour < 10) // hepsi
+                time = "0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
 
             return time;
+
         }
+
         private void showHeatmap_Click(object sender, EventArgs e)
         {
             heatmapPage form = new heatmapPage();
@@ -343,15 +333,6 @@ namespace HeatmapApp
             this.Hide();
         }
 
-        private void enterButton_Click(object sender, EventArgs e)
-        {
-            string userID = userIDTextBox.Text;
-            string time = timeTextBox.Text;
-
-            printPathAccordingToUser(userID, time);
-
-        }
-
         private void currentLocationButton_Click(object sender, EventArgs e)
         {
             currentLocationPage form = new currentLocationPage();
@@ -364,6 +345,20 @@ namespace HeatmapApp
             mainPage form = new mainPage();
             form.Show();
             this.Hide();
+        }
+
+        private void enterButton_Click(object sender, EventArgs e)
+        {
+            string userID = userIDTextBox.Text;
+            string time = timeTextBox.Text;
+            label1.Visible = true;
+            enterButton.Visible = false;
+            printPathAccordingToUser(userID, time);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            createBitMap(locaitons);
         }
     }
 }
