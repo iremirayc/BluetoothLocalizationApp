@@ -15,9 +15,9 @@ using System.Windows.Forms;
 
 namespace HeatmapApp
 {
-    public partial class currentLocationPage : Form
+    public partial class allUsersLocPagecs : Form
     {
-        public currentLocationPage()
+        public allUsersLocPagecs()
         {
             InitializeComponent();
         }
@@ -220,31 +220,36 @@ namespace HeatmapApp
         }
 
         private CancellationTokenSource _canceller;
+        public List<List<string>> locaitons = new List<List<string>>();
         static FirebaseConneciton con = new FirebaseConneciton();
-        private async void printCurrentTimeAccordingToUser(string id)
+        private async void printCurrentTimeAccordingToUser()
         {
+            _canceller = new CancellationTokenSource();
+            int i = 0;
+            int id = 1;
+            string Time = "";
+            bool statement = true;
+
             DateTime date = DateTime.Now;
             string format = "HH:mm:ss";
             string time = date.ToString(format);
-            _canceller = new CancellationTokenSource();
-            int i = 0;
-            while (true)
+            while (statement)
             {
+
                 System.Threading.Thread.Sleep(500);
                 if (_canceller.Token.IsCancellationRequested)
                     break;
                 con.client = new FireSharp.FirebaseClient(con.config);
-                string addr = "Devices/" + id + "/" + time;
-                con.response = await con.client.GetAsync(addr);
+                string addrx = "Devices/" + id + "/" + time;
+                con.response = await con.client.GetAsync(addrx);
 
-                Device device = con.response.ResultAs<Device>();
+                Device devicex = con.response.ResultAs<Device>();
 
-                if (device == null)
+                if (devicex == null)
                 {
                     i++;
                     if (i > 5)
                     {
-                        MessageBox.Show("There is no device with this ID!");
                         break;
                     }
                     time = ControlTime(time);
@@ -253,26 +258,44 @@ namespace HeatmapApp
 
                 else
                 {
-                    date = DateTime.Now;
-                    format = "HH:mm:ss";
-                    time = date.ToString(format);
-                    createBitMap(device);
-                    System.Threading.Thread.Sleep(3000);
-                    i = 0;
+                    Time = time;
+                    statement = false;
                 }
             }
-        }
 
-        private void createBitMap(Device device)
-        {
+            while (id < 4)
+            {
+                con.client = new FireSharp.FirebaseClient(con.config);
+                string addr = "Devices/" + id + "/" + Time;
+                con.response = await con.client.GetAsync(addr);
+                Device device = con.response.ResultAs<Device>();
+                List<string> pos = new List<string>();
+                pos.Add((device.posX).ToString());
+                pos.Add((device.posY).ToString());
+                locaitons.Add(pos);
+                id++;
+                statement = false;
+            }
+
             // Create new memory bitmap the same size as the picture box
             Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
-            HeatPoints.Clear();
-            HeatPoints.Add(new HeatPoint(device.posX, device.posY, 60));
+
+            createBitMap(locaitons); 
             // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
             bMap = CreateIntensityMask(bMap, HeatPoints);
             // Colorize the memory bitmap and assign it as the picture boxes image
             map_pictureBox.Image = Colorize(bMap, 255);
+
+        }
+
+        private void createBitMap(List<List<string>> locaitons)
+        {
+
+            for (int i = 0; i < locaitons.Count; i++)
+            {
+                HeatPoints.Add(new HeatPoint(Double.Parse(locaitons[i][0]), Double.Parse(locaitons[i][1]), 100));
+            }
+
         }
 
         private string ControlTime(string time)
@@ -372,13 +395,22 @@ namespace HeatmapApp
         {
             if (_canceller != null)
                 _canceller.Cancel();
-            string userID = userIDTextBox.Text;
-            printCurrentTimeAccordingToUser(userID);
+            printCurrentTimeAccordingToUser();
+
         }
 
         private void allCurrentLocButton_Click(object sender, EventArgs e)
         {
             allUsersLocPagecs form = new allUsersLocPagecs();
+            if (_canceller != null)
+                _canceller.Cancel();
+            form.Show();
+            this.Hide();
+        }
+
+        private void currentLocationButton_Click(object sender, EventArgs e)
+        {
+            currentLocationPage form = new currentLocationPage();
             if (_canceller != null)
                 _canceller.Cancel();
             form.Show();

@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="allUsersLocPagecs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="allUsersLocPagecs.Designer.cs">
+      <DependentUpon>allUsersLocPagecs.cs</DependentUpon>
+    </Compile>
     <Compile Include="currentLocationPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +93,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="allUsersLocPagecs.resx">
+      <DependentUpon>allUsersLocPagecs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="currentLocationPage.resx">
       <DependentUpon>currentLocationPage.cs</DependentUpon>
     </EmbeddedResource>

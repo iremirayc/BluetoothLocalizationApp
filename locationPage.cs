@@ -352,5 +352,12 @@ namespace HeatmapApp
             string time = timeTextBox.Text;
             readAccordingToTime(userID, time);
         }
+
+        private void allCurrentLocButton_Click(object sender, EventArgs e)
+        {
+            allUsersLocPagecs form = new allUsersLocPagecs();
+            form.Show();
+            this.Hide();
+        }
     }
 }

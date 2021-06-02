@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -231,7 +232,7 @@ namespace HeatmapApp
                     nullCount++;
                     if (nullCount > 4)
                     {
-                        button1.Visible = true;
+                        showButton.Visible = true;
                         label1.Visible = false;
                         break;
                     }
@@ -356,9 +357,16 @@ namespace HeatmapApp
             printPathAccordingToUser(userID, time);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void showButton_Click(object sender, EventArgs e)
         {
             createBitMap(locaitons);
+        }
+
+        private void allCurrentLocButton_Click(object sender, EventArgs e)
+        {
+            allUsersLocPagecs form = new allUsersLocPagecs();
+            form.Show();
+            this.Hide();
         }
     }
 }

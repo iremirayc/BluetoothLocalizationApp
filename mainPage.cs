@@ -51,5 +51,12 @@ namespace HeatmapApp
             form.Show();
             this.Hide();
         }
+
+        private void allCurrentLocButton_Click(object sender, EventArgs e)
+        {
+            allUsersLocPagecs form = new allUsersLocPagecs();
+            form.Show();
+            this.Hide();
+        }
     }
 }

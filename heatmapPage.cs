@@ -235,63 +235,30 @@ namespace HeatmapApp
 
         public List<List<string>> locaitons = new List<List<string>>();
         static FirebaseConneciton con = new FirebaseConneciton();
-        private async void GetAllDevicesId(string time)
-        {
-            string Time = time;
-            int id = 1;
-            int count = 0;
-            List<int> Devices = new List<int>();
-            while (id < 4)
-            {
-                while (true)
-                {
-                    con.client = new FireSharp.FirebaseClient(con.config);
-                    string addr = "Devices/" + id + "/" + time;
-                    con.response = await con.client.GetAsync(addr);
-                    Device device = con.response.ResultAs<Device>();
-                    if (device != null)
-                    {
-                        Devices.Add(id);
-                        Time = time;
-                        break;
-                    }
-                    else
-                    {
-                        count++;
-                        time = ControlTime(time, 1);
-                        if (count > 5)
-                            break;
-                        continue;
-                    }
-
-                }
-                id++;
-            }
-            GetAllData(Devices, Time);
-        }
-
-        private async void GetAllData(List<int> Devices, string time)
+        private async void GetAllData(string time)
         {
             int nullCount = 0;
             int i = 0;
             string Time = time;
-            while (i < Devices.Count)
+            while (i < 4)
             {
                 while (true)
                 {
-                    int id = Devices[i];
+                    int id = i;
                     con.client = new FireSharp.FirebaseClient(con.config);
                     string addr = "Devices/" + id + "/" + time;
                     con.response = await con.client.GetAsync(addr);
-
                     Device device = con.response.ResultAs<Device>();
+                    DateTime date = DateTime.Now;
+                    string format = "HH:mm:ss";
+                    string timeNow = date.ToString(format);
+                    if (time == timeNow)
+                        break;
                     if (device == null)
                     {
                         nullCount++;
-                        if (nullCount > 3)
+                        if (nullCount > 8)
                         {
-                            label1.Visible = false;
-                            button1.Visible = true;
                             break;
                         }
 
@@ -311,6 +278,8 @@ namespace HeatmapApp
                 i++;
                 time = Time;
             }
+            label1.Visible = false;
+            showButton.Visible = true;
         }
 
         private void createBitMap(List<List<string>> locaitons)
@@ -395,10 +364,10 @@ namespace HeatmapApp
             string time = timeTextBox.Text;
             enterButton.Visible = false;
             label1.Visible = true;
-            GetAllDevicesId(time);
+            GetAllData(time);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void showButton_Click(object sender, EventArgs e)
         {
             // Create new memory bitmap the same size as the picture box
             Bitmap bMap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -409,8 +378,15 @@ namespace HeatmapApp
             // Colorize the memory bitmap and assign it as the picture boxes image
             pictureBox1.Image = Colorize(bMap, 255);
 
-            button1.Visible = false;
+            showButton.Visible = false;
             enterButton.Visible = true;
+        }
+
+        private void allCurrentLocButton_Click(object sender, EventArgs e)
+        {
+            allUsersLocPagecs form = new allUsersLocPagecs();
+            form.Show();
+            this.Hide();
         }
     }
 }

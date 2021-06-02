@@ -79,6 +79,8 @@ namespace HeatmapApp
             this.tcNoLabel = new System.Windows.Forms.Label();
             this.deviceIDLabel = new System.Windows.Forms.Label();
             this.infoLabel = new System.Windows.Forms.Label();
+            this.userInfoLabel = new System.Windows.Forms.Label();
+            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.abovepanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -448,7 +450,7 @@ namespace HeatmapApp
             // 
             // showHeatmapButton
             // 
-            this.showHeatmapButton.Location = new System.Drawing.Point(9, 31);
+            this.showHeatmapButton.Location = new System.Drawing.Point(10, 30);
             this.showHeatmapButton.Margin = new System.Windows.Forms.Padding(2);
             this.showHeatmapButton.Name = "showHeatmapButton";
             this.showHeatmapButton.Size = new System.Drawing.Size(111, 37);
@@ -473,7 +475,7 @@ namespace HeatmapApp
             this.registerTitle.AutoSize = true;
             this.registerTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.registerTitle.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.registerTitle.Location = new System.Drawing.Point(712, 37);
+            this.registerTitle.Location = new System.Drawing.Point(700, 37);
             this.registerTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.registerTitle.Name = "registerTitle";
             this.registerTitle.Size = new System.Drawing.Size(219, 29);
@@ -498,6 +500,7 @@ namespace HeatmapApp
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.SeaGreen;
+            this.panel6.Controls.Add(this.allCurrentLocButton);
             this.panel6.Controls.Add(this.backHomeButton);
             this.panel6.Controls.Add(this.currentLocationButton);
             this.panel6.Controls.Add(this.userTraceButton);
@@ -514,7 +517,7 @@ namespace HeatmapApp
             this.backHomeButton.BackColor = System.Drawing.Color.Transparent;
             this.backHomeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.backHomeButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.backHomeButton.Location = new System.Drawing.Point(9, 226);
+            this.backHomeButton.Location = new System.Drawing.Point(10, 230);
             this.backHomeButton.Margin = new System.Windows.Forms.Padding(2);
             this.backHomeButton.Name = "backHomeButton";
             this.backHomeButton.Size = new System.Drawing.Size(111, 37);
@@ -525,7 +528,7 @@ namespace HeatmapApp
             // 
             // currentLocationButton
             // 
-            this.currentLocationButton.Location = new System.Drawing.Point(9, 177);
+            this.currentLocationButton.Location = new System.Drawing.Point(10, 180);
             this.currentLocationButton.Name = "currentLocationButton";
             this.currentLocationButton.Size = new System.Drawing.Size(111, 37);
             this.currentLocationButton.TabIndex = 5;
@@ -535,7 +538,7 @@ namespace HeatmapApp
             // 
             // userTraceButton
             // 
-            this.userTraceButton.Location = new System.Drawing.Point(9, 128);
+            this.userTraceButton.Location = new System.Drawing.Point(10, 130);
             this.userTraceButton.Margin = new System.Windows.Forms.Padding(2);
             this.userTraceButton.Name = "userTraceButton";
             this.userTraceButton.Size = new System.Drawing.Size(111, 37);
@@ -549,7 +552,7 @@ namespace HeatmapApp
             this.findLocationButton.BackColor = System.Drawing.Color.Transparent;
             this.findLocationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.findLocationButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.findLocationButton.Location = new System.Drawing.Point(9, 80);
+            this.findLocationButton.Location = new System.Drawing.Point(10, 80);
             this.findLocationButton.Margin = new System.Windows.Forms.Padding(2);
             this.findLocationButton.Name = "findLocationButton";
             this.findLocationButton.Size = new System.Drawing.Size(111, 37);
@@ -646,11 +649,30 @@ namespace HeatmapApp
             this.infoLabel.TabIndex = 21;
             this.infoLabel.Text = "Info : ";
             // 
+            // userInfoLabel
+            // 
+            this.userInfoLabel.AutoSize = true;
+            this.userInfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userInfoLabel.Location = new System.Drawing.Point(661, 212);
+            this.userInfoLabel.Name = "userInfoLabel";
+            this.userInfoLabel.Size = new System.Drawing.Size(0, 25);
+            this.userInfoLabel.TabIndex = 22;
+            // 
+            // allCurrentLocButton
+            // 
+            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
+            this.allCurrentLocButton.Name = "allCurrentLocButton";
+            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
+            this.allCurrentLocButton.TabIndex = 23;
+            this.allCurrentLocButton.Text = "All Current Location";
+            this.allCurrentLocButton.UseVisualStyleBackColor = true;
+            // 
             // registerPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1028, 609);
+            this.Controls.Add(this.userInfoLabel);
             this.Controls.Add(this.infoLabel);
             this.Controls.Add(this.deviceIDLabel);
             this.Controls.Add(this.tcNoLabel);
@@ -744,5 +766,7 @@ namespace HeatmapApp
         private System.Windows.Forms.Label tcNoLabel;
         private System.Windows.Forms.Label deviceIDLabel;
         private System.Windows.Forms.Label infoLabel;
+        private System.Windows.Forms.Label userInfoLabel;
+        private System.Windows.Forms.Button allCurrentLocButton;
     }
 }

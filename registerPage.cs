@@ -78,8 +78,8 @@ namespace HeatmapApp
             }
             else
             {
-                MessageBox.Show("Name : " + visitor.Name + "\nTC : " + visitor.TC + 
-                    "\nDevice ID : " + visitor.deviceId + "\nInfo : " + visitor.Info);
+                userInfoLabel.Text = "Name : " + visitor.Name + "\nTC : " + visitor.TC +
+                    "\nDevice ID : " + visitor.deviceId + "\nInfo : " + visitor.Info;
             }
 
         }
@@ -97,8 +97,8 @@ namespace HeatmapApp
             }
             else
             {
-                MessageBox.Show("Name : " + visitor.Name + "\nTC : " + visitor.TC +
-                    "\nDevice ID : " + visitor.deviceId + "\nInfo : " + visitor.Info);
+                userInfoLabel.Text = "Name : " + visitor.Name + "\nTC : " + visitor.TC +
+                    "\nDevice ID : " + visitor.deviceId + "\nInfo : " + visitor.Info;
             }
         }
 
