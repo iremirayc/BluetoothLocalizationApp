@@ -227,41 +227,45 @@ namespace HeatmapApp
         }
 
         static FirebaseConneciton con = new FirebaseConneciton();
+        private Device device = null;
         private async void readAccordingToTime(string id, string time)
         {
+            con.client = new FireSharp.FirebaseClient(con.config);
+            string addr = "Devices/" + id + "/" + time;
+            con.response = await con.client.GetAsync(addr);
+            device = con.response.ResultAs<Device>();
+            int count = 0;
+            while (device == null)
+            {
+                time = ControlTime(time);
                 con.client = new FireSharp.FirebaseClient(con.config);
-                string addr = "Devices/" + id + "/" + time;
+                addr = "Devices/" + id + "/" + time;
                 con.response = await con.client.GetAsync(addr);
-                Device device = con.response.ResultAs<Device>();
-                int count = 0;
-                while (device == null)
+                device = con.response.ResultAs<Device>();
+                count++;
+                if (count > 5)
                 {
-                    time = ControlTime(time);
-                    con.client = new FireSharp.FirebaseClient(con.config);
-                    addr = "Devices/" + id + "/" + time;
-                    con.response = await con.client.GetAsync(addr);
-                    device = con.response.ResultAs<Device>();
-                    count++;
-                    if (count > 5)
-                    {
-                        MessageBox.Show("Could not Find!");
-                        return;
-                    }
-
+                    MessageBox.Show("Could not Find!");
+                    return;
                 }
-                createBitMap(device);
+
+            }
+            //createBitMap(device);
+            this.Refresh();
+            
+            mapPictureBox2.Show();
         }
 
         private void createBitMap(Device device)
         {
             // Create new memory bitmap the same size as the picture box
-            Bitmap bMap = new Bitmap(mapPictureBox.Width, mapPictureBox.Height);
+            Bitmap bMap = new Bitmap(mapPictureBox2.Width, mapPictureBox2.Height);
             HeatPoints.Clear();
             HeatPoints.Add(new HeatPoint(device.posX, device.posY, 60));
             // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
             bMap = CreateIntensityMask(bMap, HeatPoints);
             // Colorize the memory bitmap and assign it as the picture boxes image
-            mapPictureBox.Image = Colorize(bMap, 255);
+            mapPictureBox2.Image = Colorize(bMap, 255);
         }
 
         private string ControlTime(string time)
@@ -351,6 +355,7 @@ namespace HeatmapApp
             string userID = UserIDTextBox.Text;
             string time = timeTextBox.Text;
             readAccordingToTime(userID, time);
+           
         }
 
         private void allCurrentLocButton_Click(object sender, EventArgs e)
@@ -358,6 +363,23 @@ namespace HeatmapApp
             allUsersLocPagecs form = new allUsersLocPagecs();
             form.Show();
             this.Hide();
+        }
+       
+        
+        private void locationpagepaint(object sender, PaintEventArgs e)
+        {
+            if (device != null )
+            {
+                
+                  
+                //mapPictureBox2.Image = Image.FromFile("C:\\Users\\pelsi\\source\\repos\\BluetoothLocalizationApp\\Images\\roomdesign.jpg");
+                //  this.mapPictureBox2.Load(Image.FromFile("C:\\Users\\pelsi\\source\\repos\\BluetoothLocalizationApp\\Images\\roomdesign.jpg");                
+                Icon icon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\free-location.ico");
+                
+                e.Graphics.DrawIcon(icon, (int)device.posX, (int)device.posY);
+               
+            }
+            
         }
     }
 }

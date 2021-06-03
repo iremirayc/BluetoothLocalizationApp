@@ -38,6 +38,7 @@ namespace HeatmapApp
             this.userTraceTitle = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.rightpanel = new System.Windows.Forms.Panel();
+            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.backHomeButton = new System.Windows.Forms.Button();
             this.currentLocationButton = new System.Windows.Forms.Button();
             this.userTraceButton = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@ namespace HeatmapApp
             this.timeLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.showButton = new System.Windows.Forms.Button();
-            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -120,6 +120,16 @@ namespace HeatmapApp
             this.rightpanel.Size = new System.Drawing.Size(131, 861);
             this.rightpanel.TabIndex = 3;
             // 
+            // allCurrentLocButton
+            // 
+            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
+            this.allCurrentLocButton.Name = "allCurrentLocButton";
+            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
+            this.allCurrentLocButton.TabIndex = 18;
+            this.allCurrentLocButton.Text = "All Current Location";
+            this.allCurrentLocButton.UseVisualStyleBackColor = true;
+            this.allCurrentLocButton.Click += new System.EventHandler(this.allCurrentLocButton_Click);
+            // 
             // backHomeButton
             // 
             this.backHomeButton.BackColor = System.Drawing.Color.Transparent;
@@ -185,11 +195,15 @@ namespace HeatmapApp
             // 
             // map_pictureBox
             // 
-            this.map_pictureBox.Location = new System.Drawing.Point(587, 164);
+            this.map_pictureBox.Image = ((System.Drawing.Image)(resources.GetObject("map_pictureBox.Image")));
+            this.map_pictureBox.Location = new System.Drawing.Point(450, 114);
             this.map_pictureBox.Name = "map_pictureBox";
-            this.map_pictureBox.Size = new System.Drawing.Size(420, 380);
+            this.map_pictureBox.Size = new System.Drawing.Size(631, 543);
             this.map_pictureBox.TabIndex = 6;
             this.map_pictureBox.TabStop = false;
+            this.map_pictureBox.Visible = false;
+            this.map_pictureBox.Click += new System.EventHandler(this.map_pictureBox_Click);
+            this.map_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicture_Paint);
             // 
             // timeTextBox
             // 
@@ -247,16 +261,6 @@ namespace HeatmapApp
             this.showButton.UseVisualStyleBackColor = true;
             this.showButton.Visible = false;
             this.showButton.Click += new System.EventHandler(this.showButton_Click);
-            // 
-            // allCurrentLocButton
-            // 
-            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
-            this.allCurrentLocButton.Name = "allCurrentLocButton";
-            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
-            this.allCurrentLocButton.TabIndex = 18;
-            this.allCurrentLocButton.Text = "All Current Location";
-            this.allCurrentLocButton.UseVisualStyleBackColor = true;
-            this.allCurrentLocButton.Click += new System.EventHandler(this.allCurrentLocButton_Click);
             // 
             // trackingPage
             // 

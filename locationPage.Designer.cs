@@ -38,21 +38,21 @@ namespace HeatmapApp
             this.findLocationTitle = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.rightpanel = new System.Windows.Forms.Panel();
+            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.backHomeButton = new System.Windows.Forms.Button();
             this.currentLocationButton = new System.Windows.Forms.Button();
             this.userTrace = new System.Windows.Forms.Button();
             this.findLocation = new System.Windows.Forms.Button();
             this.UserIDTextBox = new System.Windows.Forms.TextBox();
             this.timeTextBox = new System.Windows.Forms.TextBox();
-            this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.mapPictureBox2 = new System.Windows.Forms.PictureBox();
             this.findButton = new System.Windows.Forms.Button();
             this.timeLabel = new System.Windows.Forms.Label();
             this.userIDLabel = new System.Windows.Forms.Label();
-            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // showHeatmap
@@ -117,6 +117,16 @@ namespace HeatmapApp
             this.rightpanel.Name = "rightpanel";
             this.rightpanel.Size = new System.Drawing.Size(131, 861);
             this.rightpanel.TabIndex = 3;
+            // 
+            // allCurrentLocButton
+            // 
+            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
+            this.allCurrentLocButton.Name = "allCurrentLocButton";
+            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
+            this.allCurrentLocButton.TabIndex = 18;
+            this.allCurrentLocButton.Text = "All Current Location";
+            this.allCurrentLocButton.UseVisualStyleBackColor = true;
+            this.allCurrentLocButton.Click += new System.EventHandler(this.allCurrentLocButton_Click);
             // 
             // backHomeButton
             // 
@@ -186,13 +196,16 @@ namespace HeatmapApp
             this.timeTextBox.Size = new System.Drawing.Size(173, 20);
             this.timeTextBox.TabIndex = 6;
             // 
-            // mapPictureBox
+            // mapPictureBox2
             // 
-            this.mapPictureBox.Location = new System.Drawing.Point(612, 164);
-            this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(420, 380);
-            this.mapPictureBox.TabIndex = 8;
-            this.mapPictureBox.TabStop = false;
+            this.mapPictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("mapPictureBox2.Image")));
+            this.mapPictureBox2.Location = new System.Drawing.Point(612, 164);
+            this.mapPictureBox2.Name = "mapPictureBox2";
+            this.mapPictureBox2.Size = new System.Drawing.Size(617, 573);
+            this.mapPictureBox2.TabIndex = 8;
+            this.mapPictureBox2.TabStop = false;
+            this.mapPictureBox2.Visible = false;
+            this.mapPictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.locationpagepaint);
             // 
             // findButton
             // 
@@ -223,26 +236,16 @@ namespace HeatmapApp
             this.userIDLabel.TabIndex = 16;
             this.userIDLabel.Text = "User ID : ";
             // 
-            // allCurrentLocButton
-            // 
-            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
-            this.allCurrentLocButton.Name = "allCurrentLocButton";
-            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
-            this.allCurrentLocButton.TabIndex = 18;
-            this.allCurrentLocButton.Text = "All Current Location";
-            this.allCurrentLocButton.UseVisualStyleBackColor = true;
-            this.allCurrentLocButton.Click += new System.EventHandler(this.allCurrentLocButton_Click);
-            // 
             // locationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
-            this.ClientSize = new System.Drawing.Size(1028, 578);
+            this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.userIDLabel);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.findButton);
-            this.Controls.Add(this.mapPictureBox);
+            this.Controls.Add(this.mapPictureBox2);
             this.Controls.Add(this.timeTextBox);
             this.Controls.Add(this.UserIDTextBox);
             this.Controls.Add(this.rightpanel);
@@ -256,7 +259,7 @@ namespace HeatmapApp
             this.abovepanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.rightpanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,7 +275,7 @@ namespace HeatmapApp
         private PictureBox pictureBox2;
         private TextBox UserIDTextBox;
         private TextBox timeTextBox;
-        private PictureBox mapPictureBox;
+        private PictureBox mapPictureBox2;
         private Button currentLocationButton;
         private Button findButton;
         private Button backHomeButton;

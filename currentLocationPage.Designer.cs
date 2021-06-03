@@ -175,6 +175,7 @@ namespace HeatmapApp
             this.map_pictureBox.Size = new System.Drawing.Size(420, 380);
             this.map_pictureBox.TabIndex = 11;
             this.map_pictureBox.TabStop = false;
+            this.map_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicture_Paint);
             // 
             // userIDTextBox
             // 

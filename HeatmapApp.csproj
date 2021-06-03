@@ -142,6 +142,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\free-location.ico" />
     <Content Include="Images\roomdesign.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -107,6 +107,69 @@ namespace HeatmapApp
             // Draw polygon (circle) using our point array and gradient brush
             Canvas.FillPolygon(GradientShaper, CircumferencePointsArray);
         }
+        public void drawpolygon(PaintEventArgs e)
+        {
+
+            // Create pen.
+            Pen blackPen = new Pen(Color.Black, 3);
+
+            // Create points that define polygon.
+            PointF point1 = new PointF(50.0F, 50.0F);
+            PointF point2 = new PointF(100.0F, 25.0F);
+            PointF point3 = new PointF(200.0F, 5.0F);
+            PointF point4 = new PointF(250.0F, 50.0F);
+            PointF point5 = new PointF(300.0F, 100.0F);
+            PointF point6 = new PointF(350.0F, 200.0F);
+            PointF point7 = new PointF(250.0F, 250.0F);
+            PointF[] curvePoints =
+                     {
+                 point1,
+                 point2,
+                 point3,
+                 point4,
+                 point5,
+                 point6,
+                 point7
+             };
+
+            // Draw polygon curve to screen.
+            e.Graphics.DrawPolygon(blackPen, curvePoints);
+
+
+            
+        }
+      
+        private void mapPicture_Paint(object sender, PaintEventArgs e)
+        {
+            if(locaitons.Count > 0)
+            {
+                Icon icon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\free-location.ico");
+                var pen = new Pen(Color.LightGreen, 3);
+                Point p1 = new Point();
+                Point p2 = new Point();
+                for (int i = 0; i< locaitons.Count; i++)
+                {
+                  
+                    e.Graphics.DrawIcon(icon, (int)Double.Parse(locaitons[i][0]), (int)Double.Parse(locaitons[i][1]));
+                    p1.X = (int)Double.Parse(locaitons[i][0]);
+                    p1.Y = (int)Double.Parse(locaitons[i][1]);
+
+                    if(i+1 < locaitons.Count)
+                    {                       
+                        p2.X = (int)Double.Parse(locaitons[i+1][0]);
+                        p2.Y = (int)Double.Parse(locaitons[i+1][1]);
+                        e.Graphics.DrawLine(pen, p1, p2);
+                    }
+         
+                }
+                
+             
+
+            }
+
+        }
+
+
 
         private double ConvertDegreesToRadians(double degrees)
         {
@@ -359,7 +422,10 @@ namespace HeatmapApp
 
         private void showButton_Click(object sender, EventArgs e)
         {
-            createBitMap(locaitons);
+            // createBitMap(locaitons);
+            this.Refresh();
+            //mapPicture_Paint(sender, (PaintEventArgs)e);
+            map_pictureBox.Show();
         }
 
         private void allCurrentLocButton_Click(object sender, EventArgs e)
@@ -367,6 +433,11 @@ namespace HeatmapApp
             allUsersLocPagecs form = new allUsersLocPagecs();
             form.Show();
             this.Hide();
+        }
+
+        private void map_pictureBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

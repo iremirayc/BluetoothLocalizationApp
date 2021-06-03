@@ -384,5 +384,10 @@ namespace HeatmapApp
             form.Show();
             this.Hide();
         }
+
+        private void mapPicture_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
