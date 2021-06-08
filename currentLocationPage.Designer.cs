@@ -35,6 +35,7 @@ namespace HeatmapApp
             this.label = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.rightpanel = new System.Windows.Forms.Panel();
+            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.backHomeButton = new System.Windows.Forms.Button();
             this.currentLocationButton = new System.Windows.Forms.Button();
             this.userTraceButton = new System.Windows.Forms.Button();
@@ -43,7 +44,6 @@ namespace HeatmapApp
             this.userIDTextBox = new System.Windows.Forms.TextBox();
             this.enterButton = new System.Windows.Forms.Button();
             this.userIDLabel = new System.Windows.Forms.Label();
-            this.allCurrentLocButton = new System.Windows.Forms.Button();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -113,6 +113,16 @@ namespace HeatmapApp
             this.rightpanel.Size = new System.Drawing.Size(131, 861);
             this.rightpanel.TabIndex = 8;
             // 
+            // allCurrentLocButton
+            // 
+            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
+            this.allCurrentLocButton.Name = "allCurrentLocButton";
+            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
+            this.allCurrentLocButton.TabIndex = 17;
+            this.allCurrentLocButton.Text = "All Current Location";
+            this.allCurrentLocButton.UseVisualStyleBackColor = true;
+            this.allCurrentLocButton.Click += new System.EventHandler(this.allCurrentLocButton_Click);
+            // 
             // backHomeButton
             // 
             this.backHomeButton.BackColor = System.Drawing.Color.Transparent;
@@ -170,11 +180,13 @@ namespace HeatmapApp
             // 
             // map_pictureBox
             // 
-            this.map_pictureBox.Location = new System.Drawing.Point(525, 130);
+            this.map_pictureBox.Image = ((System.Drawing.Image)(resources.GetObject("map_pictureBox.Image")));
+            this.map_pictureBox.Location = new System.Drawing.Point(510, 93);
             this.map_pictureBox.Name = "map_pictureBox";
-            this.map_pictureBox.Size = new System.Drawing.Size(420, 380);
+            this.map_pictureBox.Size = new System.Drawing.Size(627, 531);
             this.map_pictureBox.TabIndex = 11;
             this.map_pictureBox.TabStop = false;
+            this.map_pictureBox.Visible = false;
             this.map_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicture_Paint);
             // 
             // userIDTextBox
@@ -204,22 +216,12 @@ namespace HeatmapApp
             this.userIDLabel.TabIndex = 16;
             this.userIDLabel.Text = "User ID : ";
             // 
-            // allCurrentLocButton
-            // 
-            this.allCurrentLocButton.Location = new System.Drawing.Point(10, 280);
-            this.allCurrentLocButton.Name = "allCurrentLocButton";
-            this.allCurrentLocButton.Size = new System.Drawing.Size(111, 37);
-            this.allCurrentLocButton.TabIndex = 17;
-            this.allCurrentLocButton.Text = "All Current Location";
-            this.allCurrentLocButton.UseVisualStyleBackColor = true;
-            this.allCurrentLocButton.Click += new System.EventHandler(this.allCurrentLocButton_Click);
-            // 
             // currentLocationPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
-            this.ClientSize = new System.Drawing.Size(1028, 609);
+            this.ClientSize = new System.Drawing.Size(1243, 717);
             this.Controls.Add(this.userIDLabel);
             this.Controls.Add(this.enterButton);
             this.Controls.Add(this.userIDTextBox);

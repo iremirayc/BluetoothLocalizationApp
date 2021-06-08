@@ -57,6 +57,7 @@ namespace HeatmapApp
             this.showHeatmapButton.TabIndex = 1;
             this.showHeatmapButton.Text = "Show Heatmap";
             this.showHeatmapButton.UseVisualStyleBackColor = true;
+            this.showHeatmapButton.Click += new System.EventHandler(this.showHeatmapButton_Click_1);
             // 
             // abovepanel
             // 
@@ -135,6 +136,7 @@ namespace HeatmapApp
             this.backHomeButton.TabIndex = 16;
             this.backHomeButton.Text = "Home Page";
             this.backHomeButton.UseVisualStyleBackColor = false;
+            this.backHomeButton.Click += new System.EventHandler(this.backHomeButton_Click_1);
             // 
             // currentLocationButton
             // 
@@ -162,6 +164,7 @@ namespace HeatmapApp
             this.userTraceButton.TabIndex = 0;
             this.userTraceButton.Text = "User Trace";
             this.userTraceButton.UseVisualStyleBackColor = false;
+            this.userTraceButton.Click += new System.EventHandler(this.userTraceButton_Click_1);
             // 
             // findLocationButton
             // 
@@ -175,6 +178,7 @@ namespace HeatmapApp
             this.findLocationButton.TabIndex = 0;
             this.findLocationButton.Text = "Find Location";
             this.findLocationButton.UseVisualStyleBackColor = false;
+            this.findLocationButton.Click += new System.EventHandler(this.findLocationButton_Click_1);
             // 
             // enterButton
             // 
@@ -189,11 +193,15 @@ namespace HeatmapApp
             // 
             // map_pictureBox
             // 
-            this.map_pictureBox.Location = new System.Drawing.Point(525, 131);
+            this.map_pictureBox.Image = ((System.Drawing.Image)(resources.GetObject("map_pictureBox.Image")));
+            this.map_pictureBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("map_pictureBox.InitialImage")));
+            this.map_pictureBox.Location = new System.Drawing.Point(519, 131);
             this.map_pictureBox.Name = "map_pictureBox";
-            this.map_pictureBox.Size = new System.Drawing.Size(420, 380);
+            this.map_pictureBox.Size = new System.Drawing.Size(618, 547);
             this.map_pictureBox.TabIndex = 19;
             this.map_pictureBox.TabStop = false;
+            this.map_pictureBox.Visible = false;
+            this.map_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.map_pictureBox_paint);
             // 
             // allUsersLocPagecs
             // 

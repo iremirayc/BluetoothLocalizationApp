@@ -221,6 +221,7 @@ namespace HeatmapApp
 
         private CancellationTokenSource _canceller;
         static FirebaseConneciton con = new FirebaseConneciton();
+        Device device = null;
         private async void printCurrentTimeAccordingToUser(string id)
         {
             DateTime date = DateTime.Now;
@@ -228,6 +229,7 @@ namespace HeatmapApp
             string time = date.ToString(format);
             _canceller = new CancellationTokenSource();
             int i = 0;
+          
             while (true)
             {
                 System.Threading.Thread.Sleep(500);
@@ -237,7 +239,7 @@ namespace HeatmapApp
                 string addr = "Devices/" + id + "/" + time;
                 con.response = await con.client.GetAsync(addr);
 
-                Device device = con.response.ResultAs<Device>();
+                 device = con.response.ResultAs<Device>();
 
                 if (device == null)
                 {
@@ -256,9 +258,12 @@ namespace HeatmapApp
                     date = DateTime.Now;
                     format = "HH:mm:ss";
                     time = date.ToString(format);
-                    createBitMap(device);
+                    //createBitMap(device);
                     System.Threading.Thread.Sleep(3000);
                     i = 0;
+
+                    this.Refresh();
+                    map_pictureBox.Show();
                 }
             }
         }
@@ -316,15 +321,15 @@ namespace HeatmapApp
             else if (minute >= 10 && second < 10 && hour >= 10) // saniye
                 time = hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
             else if (minute >= 10 && second >= 10 && hour < 10) // saat
-                time = ":0" + hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+                time = "0" + hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
             else if (minute < 10 && second < 10 && hour >= 10) // dakika ve saniye
                 time = hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
             else if (minute < 10 && second >= 10 && hour < 10) // saat ve dakika
-                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
+                time = "0" + hour.ToString() + ":0" + minute.ToString() + ":" + second.ToString();
             else if (minute >= 10 && second < 10 && hour < 10) // saat ve saniye
-                time = ":0" + hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
+                time = "0" + hour.ToString() + ":" + minute.ToString() + ":0" + second.ToString();
             else if (minute < 10 && second < 10 && hour < 10) // hepsi
-                time = ":0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
+                time = "0" + hour.ToString() + ":0" + minute.ToString() + ":0" + second.ToString();
 
             return time;
 
@@ -374,6 +379,8 @@ namespace HeatmapApp
                 _canceller.Cancel();
             string userID = userIDTextBox.Text;
             printCurrentTimeAccordingToUser(userID);
+
+            
         }
 
         private void allCurrentLocButton_Click(object sender, EventArgs e)
@@ -387,7 +394,13 @@ namespace HeatmapApp
 
         private void mapPicture_Paint(object sender, PaintEventArgs e)
         {
+            Icon icon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\free-location.ico");
 
+            if (device != null)
+            {
+                e.Graphics.DrawIcon(icon, (int)device.posX, (int)device.posY);
+            }
+           
         }
     }
 }

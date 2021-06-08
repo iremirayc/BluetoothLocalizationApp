@@ -220,71 +220,104 @@ namespace HeatmapApp
         }
 
         private CancellationTokenSource _canceller;
-        public List<List<string>> locaitons = new List<List<string>>();
+        public List<List<double>> locaitons = new List<List<double>>();
+
+        List<List<double>> controlDevices1 = new List<List<double>>();
+        List<List<double>> controlDevices2 = new List<List<double>>();
+        List<List<double>> controlDevices3 = new List<List<double>>();
+
         static FirebaseConneciton con = new FirebaseConneciton();
         private async void printCurrentTimeAccordingToUser()
         {
+            int counter = 0;
             _canceller = new CancellationTokenSource();
             int i = 0;
             int id = 1;
             string Time = "";
             bool statement = true;
 
-            DateTime date = DateTime.Now;
-            string format = "HH:mm:ss";
-            string time = date.ToString(format);
-            while (statement)
+            while (true)
             {
-
-                System.Threading.Thread.Sleep(500);
+                DateTime date = DateTime.Now;
+                string format = "HH:mm:ss";
+                string time = date.ToString(format);
                 if (_canceller.Token.IsCancellationRequested)
                     break;
-                con.client = new FireSharp.FirebaseClient(con.config);
-                string addrx = "Devices/" + id + "/" + time;
-                con.response = await con.client.GetAsync(addrx);
-
-                Device devicex = con.response.ResultAs<Device>();
-
-                if (devicex == null)
+                while (statement)
                 {
-                    i++;
-                    if (i > 5)
-                    {
+                    System.Threading.Thread.Sleep(500);
+                    if (_canceller.Token.IsCancellationRequested)
                         break;
+                    con.client = new FireSharp.FirebaseClient(con.config);
+                    string addrx = "Devices/" + id + "/" + time;
+                    con.response = await con.client.GetAsync(addrx);
+
+                    Device devicex = con.response.ResultAs<Device>();
+
+                    if (devicex == null)
+                    {
+                        i++;
+                        if (i > 5)
+                        {
+                            break;
+                        }
+                        time = ControlTime(time);
+                        continue;
                     }
-                    time = ControlTime(time);
-                    continue;
-                }
 
-                else
+                    else
+                    {
+                        Time = time;
+                        statement = false;
+                    }
+                }
+                while (id < 4)
                 {
-                    Time = time;
-                    statement = false;
+                    i = 0;
+                    con.client = new FireSharp.FirebaseClient(con.config);
+                    string addr = "Devices/" + id + "/" + Time;
+                    con.response = await con.client.GetAsync(addr);
+                    Device device = con.response.ResultAs<Device>();
+                    List<double> pos = new List<double>();
+                    pos.Add(device.posX);
+                    pos.Add(device.posY);
+                    locaitons.Add(pos);
+                    id++;
+                    statement = true;
                 }
+                id = 1;
+                this.Refresh();
+                map_pictureBox.Show();
+                if (counter < 3)
+                {
+                    controlDevices1.Add(locaitons[0]);
+                    controlDevices2.Add(locaitons[1]);
+                    if (locaitons.Count == 3)
+                        controlDevices3.Add(locaitons[2]);
+                    counter++;
+                }
+                if (counter == 2)
+                {
+                    deviceMissing();
+                    controlDevices1.Clear();
+                    controlDevices2.Clear();
+                    controlDevices3.Clear();
+                    counter = 0;
+                }
+
+                locaitons.Clear();
+                System.Threading.Thread.Sleep(3000);
             }
 
-            while (id < 4)
-            {
-                con.client = new FireSharp.FirebaseClient(con.config);
-                string addr = "Devices/" + id + "/" + Time;
-                con.response = await con.client.GetAsync(addr);
-                Device device = con.response.ResultAs<Device>();
-                List<string> pos = new List<string>();
-                pos.Add((device.posX).ToString());
-                pos.Add((device.posY).ToString());
-                locaitons.Add(pos);
-                id++;
-                statement = false;
-            }
 
-            // Create new memory bitmap the same size as the picture box
-            Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
+            //// Create new memory bitmap the same size as the picture box
+            //Bitmap bMap = new Bitmap(map_pictureBox.Width, map_pictureBox.Height);
 
-            createBitMap(locaitons); 
-            // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
-            bMap = CreateIntensityMask(bMap, HeatPoints);
-            // Colorize the memory bitmap and assign it as the picture boxes image
-            map_pictureBox.Image = Colorize(bMap, 255);
+            //createBitMap(locaitons);
+            //// Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
+            //bMap = CreateIntensityMask(bMap, HeatPoints);
+            //// Colorize the memory bitmap and assign it as the picture boxes image
+            //map_pictureBox.Image = Colorize(bMap, 255);
 
         }
 
@@ -353,44 +386,6 @@ namespace HeatmapApp
 
         }
 
-
-
-        private void userTraceButton_Click(object sender, EventArgs e)
-        {
-            trackingPage form = new trackingPage();
-            if (_canceller != null)
-                _canceller.Cancel();
-            form.Show();
-            this.Hide();
-        }
-
-        private void findLocationButton_Click(object sender, EventArgs e)
-        {
-            locationPage form = new locationPage();
-            if (_canceller != null)
-                _canceller.Cancel();
-            form.Show();
-            this.Hide();
-        }
-
-        private void showHeatmapButton_Click(object sender, EventArgs e)
-        {
-            heatmapPage form = new heatmapPage();
-            if (_canceller != null)
-                _canceller.Cancel();
-            form.Show();
-            this.Hide();
-        }
-
-        private void backHomeButton_Click(object sender, EventArgs e)
-        {
-            mainPage form = new mainPage();
-            if (_canceller != null)
-                _canceller.Cancel();
-            form.Show();
-            this.Hide();
-        }
-
         private void enterButton_Click(object sender, EventArgs e)
         {
             if (_canceller != null)
@@ -415,6 +410,97 @@ namespace HeatmapApp
                 _canceller.Cancel();
             form.Show();
             this.Hide();
+        }
+
+        private void map_pictureBox_paint(object sender, PaintEventArgs e)
+        {
+            Icon icon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\blueuser.ico");
+            Icon icon2 = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\greenuser.ico");
+            Icon icon3 = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\orangeuser.ico");
+            if (locaitons != null)
+            {
+                if (locaitons.Count == 3)
+                {
+                    e.Graphics.DrawIcon(icon, (int)locaitons[0][0], (int)locaitons[0][1]);
+                    e.Graphics.DrawIcon(icon2, (int)locaitons[1][0], (int)locaitons[1][1]);
+                    e.Graphics.DrawIcon(icon3, (int)locaitons[2][0], (int)locaitons[2][1]);
+                }
+            }
+        }
+
+        private void backHomeButton_Click_1(object sender, EventArgs e)
+        {
+            mainPage form = new mainPage();
+            if (_canceller != null)
+                _canceller.Cancel();
+            form.Show();
+            this.Hide();
+        }
+
+        private void userTraceButton_Click_1(object sender, EventArgs e)
+        {
+            trackingPage form = new trackingPage();
+            if (_canceller != null)
+                _canceller.Cancel();
+            form.Show();
+            this.Hide();
+        }
+
+        private void findLocationButton_Click_1(object sender, EventArgs e)
+        {
+            locationPage form = new locationPage();
+            if (_canceller != null)
+                _canceller.Cancel();
+            form.Show();
+            this.Hide();
+        }
+
+        private void showHeatmapButton_Click_1(object sender, EventArgs e)
+        {
+            heatmapPage form = new heatmapPage();
+            if (_canceller != null)
+                _canceller.Cancel();
+            form.Show();
+            this.Hide();
+        }
+
+        private void deviceMissing()
+        {
+
+            bool bool1 = areSame(controlDevices1);
+            bool bool2 = areSame(controlDevices2);
+            bool bool3 = areSame(controlDevices3);
+
+            if (bool1)
+                MessageBox.Show("Caution! Device 1 out of range.");
+
+            if (bool2)
+                MessageBox.Show("Caution! Device 2 out of range.");
+            if (bool3)
+                MessageBox.Show("Caution! Device 3 out of range.");
+
+
+        }
+
+        public static bool areSame(List<List<double>> arr)
+        {
+
+            double x = arr[0][0];
+            double y = arr[0][1];
+            for (int i = 0; i < arr.Count; i++)
+            {
+                if ((arr[i][0] == x && arr[i][1] == y) || (arr[i][0] == 0 && arr[i][1] == 0))
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
         }
     }
 }

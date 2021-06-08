@@ -49,6 +49,7 @@ namespace HeatmapApp
             this.findButton = new System.Windows.Forms.Button();
             this.timeLabel = new System.Windows.Forms.Label();
             this.userIDLabel = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.abovepanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.rightpanel.SuspendLayout();
@@ -199,7 +200,7 @@ namespace HeatmapApp
             // mapPictureBox2
             // 
             this.mapPictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("mapPictureBox2.Image")));
-            this.mapPictureBox2.Location = new System.Drawing.Point(612, 164);
+            this.mapPictureBox2.Location = new System.Drawing.Point(612, 176);
             this.mapPictureBox2.Name = "mapPictureBox2";
             this.mapPictureBox2.Size = new System.Drawing.Size(617, 573);
             this.mapPictureBox2.TabIndex = 8;
@@ -282,6 +283,7 @@ namespace HeatmapApp
         private Label timeLabel;
         private Label userIDLabel;
         private Button allCurrentLocButton;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

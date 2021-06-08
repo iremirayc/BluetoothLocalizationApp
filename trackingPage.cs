@@ -136,34 +136,44 @@ namespace HeatmapApp
             e.Graphics.DrawPolygon(blackPen, curvePoints);
 
 
-            
+
         }
-      
+
         private void mapPicture_Paint(object sender, PaintEventArgs e)
         {
-            if(locaitons.Count > 0)
+            if (locaitons.Count > 0)
             {
-                Icon icon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\free-location.ico");
+                Size size = new Size();
+                size.Width = 80;
+                size.Height = 80;
+                //"C:\\Users\\pelsi\\source\repos\\BluetoothLocalizationApp\\Images\\
+                Icon icon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\dot.ico");
+                Icon starticon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\starticon.ico", size);
+                Icon finalicon = new Icon("C:\\Users\\pelsi\\source\\repos\\deneme1\\deneme1\\resim\\endicon.ico", size);
                 var pen = new Pen(Color.LightGreen, 3);
                 Point p1 = new Point();
                 Point p2 = new Point();
-                for (int i = 0; i< locaitons.Count; i++)
-                {
-                  
-                    e.Graphics.DrawIcon(icon, (int)Double.Parse(locaitons[i][0]), (int)Double.Parse(locaitons[i][1]));
-                    p1.X = (int)Double.Parse(locaitons[i][0]);
-                    p1.Y = (int)Double.Parse(locaitons[i][1]);
+                e.Graphics.DrawIcon(starticon, (int)Double.Parse(locaitons[0][0]) - 10, (int)Double.Parse(locaitons[0][1]) - 10);
 
-                    if(i+1 < locaitons.Count)
-                    {                       
-                        p2.X = (int)Double.Parse(locaitons[i+1][0]);
-                        p2.Y = (int)Double.Parse(locaitons[i+1][1]);
+                for (int i = 1; i < locaitons.Count - 1; i++)
+                {
+                    p1.X = (int)Double.Parse(locaitons[i][0]) + 10;
+                    p1.Y = (int)Double.Parse(locaitons[i][1]) + 10;
+
+                    if (i + 1 < locaitons.Count)
+                    {
+                        p2.X = (int)Double.Parse(locaitons[i + 1][0]) + 10;
+                        p2.Y = (int)Double.Parse(locaitons[i + 1][1]) + 10;
                         e.Graphics.DrawLine(pen, p1, p2);
                     }
-         
+                    e.Graphics.DrawIcon(icon, (int)Double.Parse(locaitons[i][0]), (int)Double.Parse(locaitons[i][1]));
                 }
-                
-             
+                e.Graphics.DrawIcon(starticon, (int)Double.Parse(locaitons[0][0]) - 10, (int)Double.Parse(locaitons[0][1]) - 10);
+                e.Graphics.DrawIcon(finalicon, (int)Double.Parse(locaitons[locaitons.Count - 1][0]) - 10, (int)Double.Parse(locaitons[locaitons.Count - 1][1]) - 10);
+
+
+
+
 
             }
 
@@ -293,7 +303,7 @@ namespace HeatmapApp
                 if (device == null)
                 {
                     nullCount++;
-                    if (nullCount > 4)
+                    if (nullCount > 5)
                     {
                         showButton.Visible = true;
                         label1.Visible = false;

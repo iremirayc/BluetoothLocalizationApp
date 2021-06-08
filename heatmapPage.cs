@@ -43,12 +43,16 @@ namespace HeatmapApp
             // Create new graphics surface from memory bitmap
             Graphics DrawSurface = Graphics.FromImage(bSurface);
             // Set background color to white so that pixels can be correctly colorized
+
+
             DrawSurface.Clear(Color.White);
+
+
             // Traverse heat point data and draw masks for each heat point
             foreach (HeatPoint DataPoint in aHeatPoints)
             {
                 // Render current heat point on draw surface
-                DrawHeatPoint(DrawSurface, DataPoint, 20);
+                DrawHeatPoint(DrawSurface, DataPoint, 100);
             }
             return bSurface;
         }
@@ -138,8 +142,8 @@ namespace HeatmapApp
             ColorMap[] OutputMap = new ColorMap[256];
             var len = OutputMap.Length;
             // Change this path to wherever you saved the palette image.
-            Bitmap Palette = MixColorPalette(Color.Green, Color.Yellow, Color.Red, len, Color.LightGray); //(Bitmap)Bitmap.FromFile(@"..\..\palette.bmp");
-                                                                                                          // Loop through each pixel and create a new color mapping
+            Bitmap Palette = MixColorPalette(Color.Green, Color.Yellow, Color.Red, len, Color.YellowGreen); //(Bitmap)Bitmap.FromFile(@"..\..\palette.bmp");
+                                                                                                            // Loop through each pixel and create a new color mapping
             for (int X = 0; X < len; X++)
             {
                 OutputMap[X] = new ColorMap();
@@ -268,10 +272,7 @@ namespace HeatmapApp
                     else
                     {
                         nullCount = 0;
-                        List<string> pos = new List<string>();
-                        pos.Add((device.posX).ToString());
-                        pos.Add((device.posY).ToString());
-                        locaitons.Add(pos);
+                        HeatPoints.Add(new HeatPoint(device.posX, device.posY, 20));
                         time = ControlTime(time, 3);
                     }
                 }
@@ -280,15 +281,13 @@ namespace HeatmapApp
             }
             label1.Visible = false;
             showButton.Visible = true;
-        }
-
-        private void createBitMap(List<List<string>> locaitons)
-        {
-            for (int i = 0; i < locaitons.Count; i++)
+            for (int k = 0; k < 420; k = k + 20)
             {
-                HeatPoints.Add(new HeatPoint(Double.Parse(locaitons[i][0]), Double.Parse(locaitons[i][1]), 100));
+                for (int j = 0; j < 380; j = j + 20)
+                {
+                    HeatPoints.Add(new HeatPoint(k, j, 5));
+                }
             }
-
         }
 
         private string ControlTime(string time, int num)
@@ -372,7 +371,6 @@ namespace HeatmapApp
             // Create new memory bitmap the same size as the picture box
             Bitmap bMap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
 
-            createBitMap(locaitons);
             // Call CreateIntensityMask, give it the memory bitmap, and store the result back in the memory bitmap
             bMap = CreateIntensityMask(bMap, HeatPoints);
             // Colorize the memory bitmap and assign it as the picture boxes image
